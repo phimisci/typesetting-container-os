@@ -1,0 +1,37 @@
+---
+journal:
+  publisher-id: 1234-5678
+  eissn: 1234-5678
+  title: Journal of Magic Manuscripts
+  publisher-name: University Press
+  publisher-loc: Bochum, Germany 
+  link: https://journalofmagicmanuscripts.org
+license:
+  text: This article is distributed under the terms of the Creative Commons Attribution 4.0 International License, which permits unrestricted use, distribution, and reproduction in any medium, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made.
+  type: CC-BY 4.0
+  link: https://creativecommons.org/licenses/by/4.0/
+copyright:
+  holder: The authors
+fontfamily: lmodern
+mainfont: Linux Libertine O
+mainfontoptions:
+- Mapping=tex-text
+- BoldFont=LinLibertineOB 
+sansfont: Open Sans
+monofont: Open Sans
+mathfont: Libertinus Math
+mathfontoptions:
+- AutoFakeBold
+lang: en-US
+mainlang: english
+polyglossia-lang:
+- name: english
+  options:
+fontsize: 12pt
+link-citations: true
+citecolor: Blue
+filecolor: Blue
+linkcolor: Blue
+urlcolor: black
+reference-section-title: References
+...

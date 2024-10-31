@@ -1,0 +1,246 @@
+<!-- 
+
+This HTML template extends the base.html template and provides a form for uploading production files and producing output files. 
+It includes sections for file uploads, filter selection, output file options, and manual article data input. 
+The form uses Flask-WTF for form handling and includes various input fields for markdown, metadata, BibTeX, images, and more. 
+There are also dynamic sections for adding keywords, authors, and affiliations, with JavaScript handling for dynamic input.
+-->
+{% extends "base.html" %}
+
+{% block styles %}
+
+#mmm-ts-article-data-container {
+display: none;
+}
+
+{% endblock %}
+
+{% block content %}
+
+<p class="text-center">You can upload the production files here and produce the output files:</p>
+
+<div class="row">
+    <!-- Upload form -->
+    <div class="col">
+        <form id="ArticleDataForm" action="{{ url_for('index') }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <h1>➤ Files</h1>
+            <!-- Markdown file upload -->
+            <div class="mt-2 form-group">
+                {{ form.markdown.label(class="form-label") }}<br>
+                {{ form.markdown(class="form-control-file") }}
+            </div>
+            <!-- Metadata file upload -->
+            <div class="mt-2 form-group">
+                {{ form.metadata.label(class="form-label") }}<br>
+                {{ form.metadata(class="form-control-file", id="metadata_upload") }}
+                <div class="mt-2 mb-2 form-check">
+                    {{ form.manual_data_input(class="form-check-input", id="manual_data_input") }}
+                    {{ form.manual_data_input.label(class="form-label") }}
+                </div>
+            </div>
+            <!-- BibTeX file upload -->
+            <div class="mt-2 form-group">
+                {{ form.bibtex.label(class="form-label") }}<br>
+                {{ form.bibtex(class="form-control-file") }}
+            </div>
+            <!-- Images file upload -->
+            <div class="mt-2 form-group">
+                {{ form.images.label(class="form-label") }}<br>
+                {{ form.images(class="form-control-file") }}
+            </div>
+            <h1 class="mt-3">➤ Filter</h1>
+            <!-- Filter selection -->
+            <div class="mt-2 form-group">
+                <div class="form-check">
+                    {% for filter in form.filter_selection %}
+                    {{ filter.selected(class="form-check-input") }} {{ filter.selected.label.text }}
+                    {{ filter.file_name(class="form-control") }}
+                    {% endfor %}
+                </div>
+            </div>
+            <h1 class="mt-3">➤ Output files</h1>
+            <!-- Output file options -->
+            <div class="mt-2 form-group">
+                <div class="form-check">
+                    {{ form.pdf(class="form-check-input") }} {{ form.pdf.label.text }}
+                </div>
+                <div class="form-check">
+                    {{ form.html(class="form-check-input") }} {{ form.html.label.text }}
+                </div>
+                <div class="form-check">
+                    {{ form.jats(class="form-check-input") }} {{ form.jats.label.text }} </div>
+                <div class="form-check">
+                    {{ form.latex(class="form-check-input") }} {{ form.latex.label.text }} </div>
+            </div>
+            <!-- Output file name -->
+            <div class="mt-2 form-group">
+                {{ form.file_name.label(class="form-label") }}<br>
+                {{ form.file_name(class="form-control", style="max-width: 400px;") }}
+            </div>
+            <!-- Error messages -->
+            {% for field_name, error_messages in form.errors.items() %}
+            <div class="alert alert-danger">
+                {% for error in error_messages %}
+                {{ form[field_name].label }}: {{ error }}<br>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <!-- Submit button -->
+            <div class="text-center">
+                {{ form.submit(class="mb-5 btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+
+    <!-- Manual article data input -->
+    <div class="col" id="mmm-ts-article-data-container">
+        <h1>➤ Manual article data input</h1>
+        <p>This field should only be used if no metadata.yaml file was uploaded.</p>
+        <!-- Title input -->
+        <div class="form-group">
+            {{ form.title.label }}<br>
+            {{ form.title(size=80, form="ArticleDataForm") }}
+        </div>
+
+        <!-- Subtitle input -->
+        <div class="mt-2 form-group">
+            {{ form.subtitle.label }}<br>
+            {{ form.subtitle(size=80, form="ArticleDataForm") }}
+            {% for error in form.subtitle.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+        <!-- Abstract input -->
+        <div class="mt-2 form-group">
+            {{ form.abstract.label }}<br>
+            {{ form.abstract(rows=10, cols=80, form="ArticleDataForm") }}
+            {% for error in form.abstract.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+        <!-- Date input -->
+        <div class="mt-2 form-group">
+            {{ form.date.label }}<br>
+            {{ form.date(size=10, form="ArticleDataForm") }}
+            {% for error in form.date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+        <!-- Volume input -->
+        <div class="mt-2 form-group">
+            {{ form.volume.label }}<br>
+            {{ form.volume(form="ArticleDataForm") }}
+            {% for error in form.volume.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+        <!-- DOI input -->
+        <div class="mt-2 form-group">
+            {{ form.doi.label }}<br>
+            {{ form.doi(size=50, form="ArticleDataForm") }}
+            {% for error in form.doi.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+        <!-- Author short input -->
+        <div class="mt-2 form-group">
+            {{ form.author_short.label }}<br>
+            {{ form.author_short(size=50, form="ArticleDataForm") }}
+            {% for error in form.author_short.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+        <!-- Keywords input -->
+        <div>
+            <h2 class="mt-5">Keywords</h2>
+            <div id="keywords">
+                {% for keyword in form.keywords %}
+                <div class="mt-2 form-group keyword">
+                    {{ keyword.label }}<br>
+                    {{ keyword(size=50, form="ArticleDataForm") }}
+                    <span class="remove-keyword remove-button btn btn-outline-danger btn-sm">Remove</span>
+                    {% for error in keyword.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" id="add-keyword" class="btn btn-outline-success btn-sm mt-2">Add keyword</button>
+        </div>
+
+        <!-- Authors input -->
+        <div>
+            <h2 class="mt-5">Authors</h2>
+            <div id="authors">
+                {% for author in form.authors %}
+                <div class="form-group author">
+                    <h3 class="mt-3">Author {{ loop.index }}</h3>
+                    <div>
+                        {{ author.author_name.label(class="mt-2") }}<br>
+                        {{ author.author_name(size=50, form="ArticleDataForm") }}
+                        {% for error in author.author_name.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        {{ author.email.label(class="mt-2") }}<br>
+                        {{ author.email(size=50, form="ArticleDataForm") }}
+                        {% for error in author.email.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        {{ author.orcid.label(class="mt-2") }}<br>
+                        {{ author.orcid(size=20, form="ArticleDataForm") }}
+                        {% for error in author.orcid.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Affiliations input -->
+                    <div>
+                        <h4 class="mt-3">Affiliations</h4>
+                        <div class="affiliations">
+                            {% for affiliation in author.affiliations %}
+                            <div class="mt-2 form-group affiliation">
+                                {{ affiliation.organization.label(class="mt-2") }}<br>
+                                {{ affiliation.organization(size=50, form="ArticleDataForm") }}
+                                <span
+                                    class="remove-affiliation remove-button btn btn-outline-danger btn-sm">Remove</span>
+                                {% for error in affiliation.organization.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="add-affiliation mt-2 btn btn-outline-success btn-sm">Add
+                            affiliation</button>
+                    </div>
+
+                    <span class="remove-author remove-button btn btn-outline-danger mt-2 btn-sm">Remove author</span>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" id="add-author" class=" mb-5 mt-2 btn btn-outline-success btn-sm">Add author</button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Load JavaScript for dynamic input handling -->
+<script src="{{ url_for('static', filename='js/scripts.js') }}" />
+{% endblock %}
+
+{% block scripts %}
+
+
+
+{% endblock %}

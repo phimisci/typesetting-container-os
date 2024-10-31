@@ -1,0 +1,116 @@
+<!-- 
+
+This is the base HTML template for the MMM Typesetting Container web interface. It includes the following sections:
+
+1. Document Metadata:
+    - Specifies the document type and language.
+    - Sets the character encoding to UTF-8.
+    - Sets the viewport for responsive design.
+    - Sets the title of the web page.
+
+2. Styles and Scripts:
+    - Links to Bootstrap CSS and a custom stylesheet.
+    - Includes jQuery and Bootstrap JavaScript files.
+    - Defines a block for additional styles to be inserted by child templates.
+
+3. Body Content:
+    - Contains a container with a card layout.
+    - The card header includes the title, subtitle, and version information.
+    - A navigation bar with links to different sections of the web interface.
+    - A section for displaying flash messages.
+    - A block for additional content to be inserted by child templates.
+
+4. JavaScript Functions:
+    - A function to close flash message boxes.
+    - A block for additional scripts to be inserted by child templates.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Document Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMM Typesetting Container</title>
+    <!-- Styles and Scripts -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
+    <style>
+        {% block styles %}
+
+        {% endblock %}
+    </style>
+</head>
+
+<body>
+    <!-- Body Content -->
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-white text-center">
+                <div class="title-span">Magic Manuscript Maker</div><br>
+                <div class="subtitle-span">Typesetting Container</div><br>
+                <small class="text-body-secondary">Version: 1.0 (04.10.2024)</small>
+            </div>
+            <!-- Navigation Bar -->
+            <nav>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class={% if request.path.startswith('/home') %}"nav-link active-menu-item"{% else
+                            %}"nav-link"{% endif %} href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class={% if request.path.startswith('/journal_data') %}"nav-link active-menu-item"{% else
+                            %}"nav-link"{% endif %} href="{{ url_for('journal_data') }}">Journal Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class={% if request.path.startswith('/help') %}"nav-link active-menu-item"{% else
+                            %}"nav-link"{% endif %} href="{{ url_for('help') }}">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class={% if request.path.startswith('/imprint') %}"nav-link active-menu-item"{% else
+                            %}"nav-link"{% endif %} href="{{ url_for('imprint') }}">Imprint</a>
+                    </li>
+
+                </ul>
+            </nav>
+            <div class="card-body">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div id="message-box-phimisci-{{ loop.index }} message-box-phimisci">
+                    <p class="message-box-phimisci-text">{{ message }}</p>
+                    <button onclick="closeMessageBox('message-box-phimisci-{{ loop.index }}')"
+                        class="close-btn-phimisci">&times;</button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <!-- Content Block -->
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        function closeMessageBox(id) {
+            var messageBox = document.getElementById(id);
+            messageBox.style.display = "none";
+        }
+
+        {% block scripts %}
+
+        {% endblock %}
+    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!--
+
+This template extends the base.html template and provides a form for updating journal data. 
+The form includes fields for publisher ID, eISSN, title, publisher name, publisher location, journal link, license text, license type, license link, and copyright holder. 
+Each field is rendered using Flask-WTF form fields and includes a label and input element. 
+The form is submitted via a POST request to the 'journal_data' endpoint.
+-->
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Instructional text for the user -->
+<p class="text-center">You can change the journal data here:</p>
+
+<!-- Form for updating journal data -->
+<form action="{{ url_for('journal_data') }}" method="POST">
+    <!-- CSRF token for security -->
+    {{ form.hidden_tag() }}
+
+    <!-- Publisher ID input field -->
+    <div class="mt-2 form-group">
+        {{ form.publisher_id.label }}<br>
+        {{ form.publisher_id(size=50) }}
+    </div>
+
+    <!-- eISSN input field -->
+    <div class="mt-2 form-group">
+        {{ form.eissn.label }}<br>
+        {{ form.eissn(size=50) }}
+    </div>
+
+    <!-- Title input field -->
+    <div class="mt-2 form-group">
+        {{ form.title.label }}<br>
+        {{ form.title(size=50) }}
+    </div>
+
+    <!-- Publisher name input field -->
+    <div class="mt-2 form-group">
+        {{ form.publisher_name.label }}<br>
+        {{ form.publisher_name(size=50) }}
+    </div>
+
+    <!-- Publisher location input field -->
+    <div class="mt-2 form-group">
+        {{ form.publisher_loc.label }}<br>
+        {{ form.publisher_loc(size=50) }}
+    </div>
+
+    <!-- Journal link input field -->
+    <div class="mt-2 form-group">
+        {{ form.journal_link.label }}<br>
+        {{ form.journal_link(size=50) }}
+    </div>
+
+    <!-- License text input field -->
+    <div class="mt-2 form-group">
+        {{ form.license_text.label }}<br>
+        {{ form.license_text(cols=50, rows=5) }}
+    </div>
+
+    <!-- License type input field -->
+    <div class="mt-2 form-group">
+        {{ form.license_type.label }}<br>
+        {{ form.license_type(size=50) }}
+    </div>
+
+    <!-- License link input field -->
+    <div class="mt-2 form-group">
+        {{ form.license_link.label }}<br>
+        {{ form.license_link(size=50) }}
+    </div>
+
+    <!-- Copyright holder input field -->
+    <div class="mt-2 form-group">
+        {{ form.copyright_holder.label }}<br>
+        {{ form.copyright_holder(size=50) }}
+    </div>
+
+    <!-- Submit button -->
+    <p>
+        {{ form.submit(class="btn btn-primary") }}
+    </p>
+</form>
+
+{% endblock %}

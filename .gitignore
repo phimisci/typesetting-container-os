@@ -1,0 +1,9 @@
+notes.txt
+*.pdf
+*.md
+metadata.yaml
+.test/
+DEPRECATED/
+__pycache__/
+*.pyc
+__mypycache__/

@@ -1,0 +1,163 @@
+:root {
+    --phimisci-yellow: rgba(255,215,0,0.60);
+    --phimisci-red: rgba(252,18,33,0.65);
+}
+
+@font-face {
+    font-family: 'Merriweather'; 
+    src: url('/static/fonts/Merriweather-Regular.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Merriweather'; 
+    src: url('/static/fonts/Merriweather-Italic.ttf') format('truetype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Merriweather'; 
+    src: url('/static/fonts/Merriweather-Bold.ttf') format('truetype');
+    font-style: bold;
+}
+
+@font-face {
+    font-family: 'Merriweather'; 
+    src: url('/static/fonts/Merriweather-Light.ttf') format('truetype');
+    font-style: light;
+}
+
+@font-face {
+    font-family: 'Montserrat-Variable'; 
+    src: url('/static/fonts/Montserrat-VariableFont.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SixtyFour'; 
+    src: url('/static/fonts/SixtyfourConvergence.ttf') format('truetype');
+}
+
+.text-body-secondary {
+    font-family: 'Merriweather', Arial, sans-serif;
+}
+
+body {
+    font-family: 'Merriweather', Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.title-span {
+    font-family: 'SixtyFour';
+    font-size: 3.5em;
+    color: var(--phimisci-red);
+}
+
+.subtitle-span {
+    font-family: 'SixtyFour';
+    font-size: 2.5em;
+    color: var(--phimisci-red);
+}
+
+h1 {
+    font-family: 'Montserrat-Variable';
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-family: 'Montserrat-Variable';
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-family: 'Montserrat-Variable';
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-family: 'Montserrat-Variable';
+    text-align: left;
+    font-size: 1rem;
+}
+
+a.nav-link {
+    font-family: 'Montserrat-Variable';
+    color: #333;
+}
+
+a.nav-link:hover {
+    font-family: 'Montserrat-Variable';
+    color: var(--phimisci-red);
+}
+
+a.active-menu-item {
+    font-weight: bold;
+}
+
+p {
+    text-align: center;
+    color: #333;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: var(--phimisci-yellow);
+}
+
+.form-label {
+    color: #333;
+}
+
+input[type="submit"].btn-primary {
+    background-color: var(--phimisci-yellow);
+    color: #333;
+    border: none;
+}
+
+input[type="submit"].btn-primary:hover {
+    background-color: var(--phimisci-red);
+    color: #333;
+    border: none;
+}
+
+.form-control-file {
+    margin-bottom: 10px;
+}
+
+/* Message box for Flash messages */
+
+.message-box-phimisci {
+	font-family: 'Montserrat';
+	line-height: normal;
+    color: rgb(234, 14, 14);
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
+}
+
+.message-box-phimisci-text {
+	font-family: 'Montserrat';
+	line-height: normal;
+    color: rgb(234, 14, 14);
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
+}
+
+.close-btn-phimisci {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px 16px;
+    color: rgb(248, 15, 15);
+    border: none;
+    cursor: pointer;
+}
