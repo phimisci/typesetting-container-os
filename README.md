@@ -160,8 +160,8 @@ It also eliminates the need to install Pandoc and LaTeX locally, which can be a 
 ## Contributing
 Contributions to the typesetting container are welcome. If you have any suggestions, improvements, or bug fixes, please feel free to open an issue or create a pull request. The typesetting container is intended to be a flexible and adaptable tool for various journals, and your contributions can help make it even better.
 
-## Authors
-If you have any questions or suggestions, please feel free to contact the author of the typesetting container: Thomas Jurczyk (GitHub handle: thomjur).
+## About
+This application was developed by Thomas Jurczyk (thomjur on GitHub) for the journal [Philosophy and the Mind Sciences](https://philosophymindscience.org/) as part of a project funded by the German Research Foundation (DFG).
 
 ## Versions
 
