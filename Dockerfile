@@ -17,9 +17,11 @@ COPY csl /app/csl
 COPY requirements.txt /app/requirements.txt
 COPY md2files.py /app/md2files.py
 COPY start_application.py /app/start_application.py
-COPY article /app/article
 COPY filter /app/filter
 COPY webinterface /app/webinterface
+
+# Create article folder
+RUN mkdir article
 
 # Activate virtual environment and install requirements
 RUN /opt/flask_app/bin/pip install -r /app/requirements.txt
