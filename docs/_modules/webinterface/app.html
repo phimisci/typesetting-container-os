@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>webinterface.app &mdash; Typesetting Container OS 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Typesetting Container OS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Typesetting Container OS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">webinterface.app</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for webinterface.app</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This module contains the Flask application for the web interface of the Typesetting Container OS tool.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">send_file</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">UploadForm</span><span class="p">,</span> <span class="n">JournalDataForm</span>
+<span class="kn">from</span> <span class="nn">flask_wtf.csrf</span> <span class="kn">import</span> <span class="n">CSRFProtect</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Important: Change this secret key if you plan to use this in production!!!</span>
+<span class="c1"># Ideally, this key should be stored in an environment variable</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;PleaseChangeThisSecretKeyIfYouPlanToUseThisInProduction123124342424234!?!=!&#39;</span>
+
+<span class="c1"># Enable CSRF protection</span>
+<span class="n">csrf</span> <span class="o">=</span> <span class="n">CSRFProtect</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="c1"># Helper functions</span>
+<div class="viewcode-block" id="create_metadata_yaml_from_input">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.app.create_metadata_yaml_from_input">[docs]</a>
+<span class="k">def</span> <span class="nf">create_metadata_yaml_from_input</span><span class="p">(</span><span class="n">upload_form</span><span class="p">:</span> <span class="n">UploadForm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Generates a metadata.yaml file from the provided upload form data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        upload_form : UploadForm</span>
+<span class="sd">            An object containing the article&#39;s metadata input fields.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">                </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create a dictionary with the article data from manual input</span>
+    <span class="n">article_data</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                        <span class="s1">&#39;subtitle&#39;</span><span class="p">:</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">subtitle</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                        <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="p">[</span>
+                                        <span class="p">{</span>
+                                            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">author</span><span class="o">.</span><span class="n">author_name</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                            <span class="s1">&#39;affiliation&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;organization&#39;</span><span class="p">:</span> <span class="n">aff</span><span class="o">.</span><span class="n">organization</span><span class="o">.</span><span class="n">data</span><span class="p">}</span> <span class="k">for</span> <span class="n">aff</span> <span class="ow">in</span> <span class="n">author</span><span class="o">.</span><span class="n">affiliations</span><span class="p">],</span>
+                                            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">author</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                            <span class="s1">&#39;orcid&#39;</span><span class="p">:</span> <span class="n">author</span><span class="o">.</span><span class="n">orcid</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">author</span><span class="o">.</span><span class="n">orcid</span><span class="o">.</span><span class="n">data</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="kc">None</span>
+                                        <span class="p">}</span>
+                                        <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">authors</span>
+                                    <span class="p">],</span>
+                        <span class="s1">&#39;keywords&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">keyword</span> <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">keywords</span><span class="o">.</span><span class="n">data</span><span class="p">],</span>
+                        <span class="s1">&#39;abstract&#39;</span><span class="p">:</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">abstract</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                        <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                        <span class="s1">&#39;volume&#39;</span><span class="p">:</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                        <span class="s1">&#39;doi&#39;</span><span class="p">:</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">doi</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                        <span class="s1">&#39;author-short&#39;</span><span class="p">:</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">author_short</span><span class="o">.</span><span class="n">data</span>
+                    <span class="p">}</span>
+    <span class="c1"># Alle leeren ORCID entfernen</span>
+    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">article_data</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">author</span><span class="p">[</span><span class="s1">&#39;orcid&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">author</span><span class="p">[</span><span class="s1">&#39;orcid&#39;</span><span class="p">]</span>
+    <span class="c1"># Create a metadata.yaml file with the article data</span>
+    <span class="n">metadata_path</span> <span class="o">=</span> <span class="s1">&#39;/app/article/metadata.yaml&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">article_data</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">explicit_start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">explicit_end</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Route for the home page</span>
+<div class="viewcode-block" id="entry">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.app.entry">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">entry</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Redirects to the main route /home.&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">))</span></div>
+
+
+<span class="c1"># This is the main route which is also used to create the output files</span>
+<div class="viewcode-block" id="index">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.app.index">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Main route for the web interface. This route is used to create the output files.&#39;&#39;&#39;</span>
+    <span class="c1"># Create form</span>
+    <span class="n">upload_form</span> <span class="o">=</span> <span class="n">UploadForm</span><span class="p">()</span>
+    <span class="c1"># Create</span>
+    <span class="c1"># POST request for UploadForm</span>
+    <span class="k">if</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+        <span class="c1"># Get the uploaded files, filters, and output formats</span>
+        <span class="n">markdown_file</span> <span class="o">=</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">markdown</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_file</span> <span class="o">=</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">bibtex_file</span> <span class="o">=</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">bibtex</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">file_name</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">selected_filters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">filter_selection</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">selected_filters</span> <span class="o">=</span> <span class="p">[</span><span class="nb">filter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_name&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">filter_selection</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="nb">filter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+        
+        <span class="c1"># Get the selected output formats</span>
+        <span class="n">OUTPUT_FORMATS</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">pdf</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">OUTPUT_FORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--pdf&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">OUTPUT_FORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--html&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">jats</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">OUTPUT_FORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--jats&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">latex</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">OUTPUT_FORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--tex&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_name</span><span class="p">:</span>
+            <span class="n">OUTPUT_FORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--filename&quot;</span><span class="p">)</span>
+            <span class="n">OUTPUT_FORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+        <span class="c1"># If no output format is selected, return an error message</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">OUTPUT_FORMATS</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Please select at least one output format!&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">))</span>
+
+        <span class="c1"># Manual data input is selected</span>
+        <span class="c1"># Create a metadata.yaml file with the data from the form</span>
+        <span class="k">if</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">manual_data_input</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">create_metadata_yaml_from_input</span><span class="p">(</span><span class="n">upload_form</span><span class="p">)</span>
+            <span class="n">METADATA_FILENAME</span> <span class="o">=</span> <span class="s1">&#39;metadata.yaml&#39;</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Metadata file is uploaded</span>
+            <span class="c1"># Save the metadata file</span>
+            <span class="c1"># Create paths for the files</span>
+            <span class="n">metadata_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/app/article&#39;</span><span class="p">,</span> <span class="n">metadata_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">metadata_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">)</span>
+            <span class="n">METADATA_FILENAME</span> <span class="o">=</span> <span class="n">metadata_file</span><span class="o">.</span><span class="n">filename</span>
+        <span class="c1"># Continue with the other files</span>
+        <span class="n">markdown_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/app/article&#39;</span><span class="p">,</span> <span class="n">markdown_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bibtex_file</span><span class="p">:</span>
+            <span class="n">bibtex_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/app/article&#39;</span><span class="p">,</span> <span class="n">bibtex_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="c1"># We can save the images directly in the article folder since we don&#39;t need the filenames or paths</span>
+        <span class="k">if</span> <span class="n">images</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+                <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/app/article&#39;</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+        <span class="c1"># Save the files</span>
+        <span class="n">markdown_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">markdown_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bibtex_file</span><span class="p">:</span>
+            <span class="n">bibtex_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">bibtex_path</span><span class="p">)</span>
+        <span class="c1"># If a bibtex file is provided, call the typesetting container with the bibtex file    </span>
+        <span class="k">if</span> <span class="n">bibtex_file</span><span class="p">:</span>
+            <span class="c1"># Check if filters are provided</span>
+            <span class="k">if</span> <span class="n">selected_filters</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">COMMAND</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;python3&#39;</span><span class="p">,</span> <span class="s1">&#39;md2files.py&#39;</span><span class="p">,</span> <span class="n">markdown_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">METADATA_FILENAME</span><span class="p">,</span> <span class="s2">&quot;--bibtex&quot;</span><span class="p">,</span> <span class="n">bibtex_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;--filter&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">selected_filters</span><span class="p">,</span> <span class="o">*</span><span class="n">OUTPUT_FORMATS</span><span class="p">]</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="n">COMMAND</span><span class="p">,</span>
+                    <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s1">&#39;python3&#39;</span><span class="p">,</span> <span class="s1">&#39;md2files.py&#39;</span><span class="p">,</span> <span class="n">markdown_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">METADATA_FILENAME</span><span class="p">,</span> <span class="s2">&quot;--bibtex&quot;</span><span class="p">,</span> <span class="n">bibtex_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">OUTPUT_FORMATS</span><span class="p">],</span>
+                    <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Check if filters are provided</span>
+            <span class="k">if</span> <span class="n">selected_filters</span><span class="p">:</span>
+                <span class="n">COMMAND</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;python3&#39;</span><span class="p">,</span> <span class="s1">&#39;md2files.py&#39;</span><span class="p">,</span> <span class="n">markdown_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">METADATA_FILENAME</span><span class="p">,</span> <span class="s1">&#39;--filter&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">selected_filters</span><span class="p">,</span> <span class="o">*</span><span class="n">OUTPUT_FORMATS</span><span class="p">]</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="n">COMMAND</span><span class="p">,</span>
+                    <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s1">&#39;python3&#39;</span><span class="p">,</span> <span class="s1">&#39;md2files.py&#39;</span><span class="p">,</span> <span class="n">markdown_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">METADATA_FILENAME</span><span class="p">,</span> <span class="o">*</span><span class="n">OUTPUT_FORMATS</span><span class="p">],</span>
+                    <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Create a ZIP file with the output files</span>
+        <span class="n">memory_file</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+
+        <span class="c1"># Write the files to the ZIP file</span>
+        <span class="n">ALLOWED_EXTENSIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;tex&#39;</span><span class="p">,</span> <span class="s1">&#39;jats&#39;</span><span class="p">,</span> <span class="s1">&#39;yaml&#39;</span><span class="p">}</span>
+        <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">memory_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zf</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;/app/article&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">ALLOWED_EXTENSIONS</span><span class="p">:</span>
+                    <span class="n">zf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;/app/article&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">file</span><span class="p">)</span>
+        
+        <span class="c1"># Reset the file pointer to the beginning</span>
+        <span class="n">memory_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Delete the files in the article folder</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;/app/article&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/app/article&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">send_file</span><span class="p">(</span>
+            <span class="n">memory_file</span><span class="p">,</span>
+            <span class="n">as_attachment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">download_name</span><span class="o">=</span><span class="s1">&#39;files.zip&#39;</span><span class="p">,</span>
+            <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;application/zip&#39;</span>
+        <span class="p">)</span>
+    <span class="c1"># GET request</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Get all Lua-filter in the filter folder</span>
+        <span class="n">filter_folder</span> <span class="o">=</span> <span class="s1">&#39;/app/filter&#39;</span>
+        <span class="n">filter_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">filter_folder</span><span class="p">)</span>
+        <span class="n">filter_names</span> <span class="o">=</span> <span class="p">[</span><span class="nb">filter</span> <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">filter_names</span> <span class="k">if</span> <span class="nb">filter</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.lua&#39;</span><span class="p">)]</span>
+        <span class="c1"># Add filter files to the form</span>
+        <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">filter_names</span><span class="p">:</span>
+            <span class="n">file_form</span> <span class="o">=</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">filter_selection</span><span class="o">.</span><span class="n">append_entry</span><span class="p">()</span>
+            <span class="n">file_form</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">filter</span>  <span class="c1"># Set the label to the file name</span>
+            <span class="n">file_form</span><span class="o">.</span><span class="n">file_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">filter</span>  <span class="c1"># Store filename or identifier if needed</span>
+        <span class="c1"># Append random keywords</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">upload_form</span><span class="o">.</span><span class="n">keywords</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">keyword_entry</span> <span class="o">=</span> <span class="n">upload_form</span><span class="o">.</span><span class="n">keywords</span><span class="o">.</span><span class="n">append_entry</span><span class="p">()</span>
+            <span class="n">keyword_entry</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;Keyword &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">upload_form</span><span class="o">.</span><span class="n">keywords</span><span class="p">))</span>
+            <span class="n">keyword_entry</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Keyword&quot;</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">upload_form</span><span class="p">)</span></div>
+
+
+<span class="c1"># Route for the journal data form</span>
+<span class="c1"># Allows the user to change the journal metadata stored in templates/MMM_JOURNAL_METADATA.yaml</span>
+<div class="viewcode-block" id="journal_data">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.app.journal_data">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/journal_data&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">journal_data</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Route for the journal data form. This route allows the user to change the journal metadata stored in templates/MMM_JOURNAL_METADATA.yaml.&#39;&#39;&#39;</span>
+    <span class="c1"># Create form</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">JournalDataForm</span><span class="p">()</span>
+    <span class="c1"># Load the journal data from the metadata file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/app/templates/MMM_JOURNAL_METADATA.yaml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">metadata_yaml</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+        <span class="c1"># Change these fields in the metadata file</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;publisher-id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">publisher_id</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;eissn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">eissn</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;publisher-name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">publisher_name</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;publisher-loc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">publisher_loc</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">journal_link</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">license_text</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">license_type</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">][</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">license_link</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;copyright&#39;</span><span class="p">][</span><span class="s1">&#39;holder&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">copyright_holder</span><span class="o">.</span><span class="n">data</span>
+        <span class="c1"># Write the changes to the metadata file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/app/templates/MMM_JOURNAL_METADATA.yaml&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metadata_yaml</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">explicit_start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">explicit_end</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Journal data updated!&quot;</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;journal_data&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Load the journal data from the metadata file</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">publisher_id</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;publisher-id&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">eissn</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;eissn&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">publisher_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;publisher-name&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">publisher_loc</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;publisher-loc&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">journal_link</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;journal&#39;</span><span class="p">][</span><span class="s1">&#39;link&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">license_text</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">license_type</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">license_link</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">][</span><span class="s1">&#39;link&#39;</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">copyright_holder</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">metadata_yaml</span><span class="p">[</span><span class="s1">&#39;copyright&#39;</span><span class="p">][</span><span class="s1">&#39;holder&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;journal-data.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span></div>
+
+    
+<span class="c1"># Route for the help page</span>
+<div class="viewcode-block" id="help">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.app.help">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/help&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">help</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Route for the help page.&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;help.html&#39;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Route for the imprint page</span>
+<div class="viewcode-block" id="imprint">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.app.imprint">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/imprint&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">imprint</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Route for the imprint page.&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;imprint.html&#39;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thomas Jurczyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

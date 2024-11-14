@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>webinterface package &mdash; Typesetting Container OS 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="start_application module" href="start_application.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Typesetting Container OS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="md2files.html">md2files module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start_application.html">start_application module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">webinterface package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.app">webinterface.app module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.app.create_metadata_yaml_from_input"><code class="docutils literal notranslate"><span class="pre">create_metadata_yaml_from_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.app.entry"><code class="docutils literal notranslate"><span class="pre">entry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.app.help"><code class="docutils literal notranslate"><span class="pre">help()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.app.imprint"><code class="docutils literal notranslate"><span class="pre">imprint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.app.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.app.journal_data"><code class="docutils literal notranslate"><span class="pre">journal_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface.forms">webinterface.forms module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.forms.AffiliationForm"><code class="docutils literal notranslate"><span class="pre">AffiliationForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.forms.AuthorForm"><code class="docutils literal notranslate"><span class="pre">AuthorForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.forms.FilterSelectionForm"><code class="docutils literal notranslate"><span class="pre">FilterSelectionForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.forms.JournalDataForm"><code class="docutils literal notranslate"><span class="pre">JournalDataForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webinterface.forms.UploadForm"><code class="docutils literal notranslate"><span class="pre">UploadForm</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-webinterface">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Typesetting Container OS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">phimisci-typesetting-container</a></li>
+      <li class="breadcrumb-item active">webinterface package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/webinterface.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="webinterface-package">
+<h1>webinterface package<a class="headerlink" href="#webinterface-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-webinterface.app">
+<span id="webinterface-app-module"></span><h2>webinterface.app module<a class="headerlink" href="#module-webinterface.app" title="Link to this heading"></a></h2>
+<p>This module contains the Flask application for the web interface of the Typesetting Container OS tool.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.app.create_metadata_yaml_from_input">
+<span class="sig-prename descclassname"><span class="pre">webinterface.app.</span></span><span class="sig-name descname"><span class="pre">create_metadata_yaml_from_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upload_form</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#webinterface.forms.UploadForm" title="webinterface.forms.UploadForm"><span class="pre">UploadForm</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/webinterface/app.html#create_metadata_yaml_from_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.app.create_metadata_yaml_from_input" title="Link to this definition"></a></dt>
+<dd><p>Generates a metadata.yaml file from the provided upload form data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>upload_form</strong> (<a class="reference internal" href="#webinterface.forms.UploadForm" title="webinterface.forms.UploadForm"><em>UploadForm</em></a>) – An object containing the article’s metadata input fields.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.app.entry">
+<span class="sig-prename descclassname"><span class="pre">webinterface.app.</span></span><span class="sig-name descname"><span class="pre">entry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/app.html#entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.app.entry" title="Link to this definition"></a></dt>
+<dd><p>Redirects to the main route /home.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.app.help">
+<span class="sig-prename descclassname"><span class="pre">webinterface.app.</span></span><span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/app.html#help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.app.help" title="Link to this definition"></a></dt>
+<dd><p>Route for the help page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.app.imprint">
+<span class="sig-prename descclassname"><span class="pre">webinterface.app.</span></span><span class="sig-name descname"><span class="pre">imprint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/app.html#imprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.app.imprint" title="Link to this definition"></a></dt>
+<dd><p>Route for the imprint page.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.app.index">
+<span class="sig-prename descclassname"><span class="pre">webinterface.app.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/app.html#index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.app.index" title="Link to this definition"></a></dt>
+<dd><p>Main route for the web interface. This route is used to create the output files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="webinterface.app.journal_data">
+<span class="sig-prename descclassname"><span class="pre">webinterface.app.</span></span><span class="sig-name descname"><span class="pre">journal_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/app.html#journal_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.app.journal_data" title="Link to this definition"></a></dt>
+<dd><p>Route for the journal data form. This route allows the user to change the journal metadata stored in templates/MMM_JOURNAL_METADATA.yaml.</p>
+</dd></dl>
+
+</section>
+<section id="module-webinterface.forms">
+<span id="webinterface-forms-module"></span><h2>webinterface.forms module<a class="headerlink" href="#module-webinterface.forms" title="Link to this heading"></a></h2>
+<p>This module contains the FlaskForm classes used in the web interface of the typesetting tool.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.forms.AffiliationForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.forms.</span></span><span class="sig-name descname"><span class="pre">AffiliationForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/forms.html#AffiliationForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.forms.AffiliationForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FlaskForm</span></code></p>
+<p>A form for capturing affiliation information.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.AffiliationForm.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#webinterface.forms.AffiliationForm.organization" title="Link to this definition"></a></dt>
+<dd><p>An optional field to input the name of the organization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">organization</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Organization',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.forms.AuthorForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.forms.</span></span><span class="sig-name descname"><span class="pre">AuthorForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/forms.html#AuthorForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.forms.AuthorForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FlaskForm</span></code></p>
+<p>AuthorForm is a FlaskForm that collects information about an author.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.AuthorForm.author_name">
+<span class="sig-name descname"><span class="pre">author_name</span></span><a class="headerlink" href="#webinterface.forms.AuthorForm.author_name" title="Link to this definition"></a></dt>
+<dd><p>The name of the author. This field is optional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.AuthorForm.affiliations">
+<span class="sig-name descname"><span class="pre">affiliations</span></span><a class="headerlink" href="#webinterface.forms.AuthorForm.affiliations" title="Link to this definition"></a></dt>
+<dd><p>A list of affiliations for the author, containing a minimum of 1 and a maximum of 3 AffiliationForm entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FieldList</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.AuthorForm.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#webinterface.forms.AuthorForm.email" title="Link to this definition"></a></dt>
+<dd><p>The email address of the author. This field is optional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.AuthorForm.orcid">
+<span class="sig-name descname"><span class="pre">orcid</span></span><a class="headerlink" href="#webinterface.forms.AuthorForm.orcid" title="Link to this definition"></a></dt>
+<dd><p>The ORCID identifier of the author. This field is optional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">affiliations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(FieldList,</span> <span class="pre">(&lt;UnboundField(FormField,</span> <span class="pre">(&lt;class</span> <span class="pre">'webinterface.forms.AffiliationForm'&gt;,),</span> <span class="pre">{})&gt;,),</span> <span class="pre">{'min_entries':</span> <span class="pre">1,</span> <span class="pre">'max_entries':</span> <span class="pre">3})&gt;</span></em><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">author_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Name',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">email</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('E-Mail',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">orcid</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('ORCID',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.forms.FilterSelectionForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.forms.</span></span><span class="sig-name descname"><span class="pre">FilterSelectionForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/forms.html#FilterSelectionForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.forms.FilterSelectionForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FlaskForm</span></code></p>
+<p>FilterSelectionForm is a form used in a Flask web application to handle filter selections.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.FilterSelectionForm.selected">
+<span class="sig-name descname"><span class="pre">selected</span></span><a class="headerlink" href="#webinterface.forms.FilterSelectionForm.selected" title="Link to this definition"></a></dt>
+<dd><p>A boolean field that indicates whether any filters are selected. Defaults to “No filters found!”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BooleanField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.FilterSelectionForm.file_name">
+<span class="sig-name descname"><span class="pre">file_name</span></span><a class="headerlink" href="#webinterface.forms.FilterSelectionForm.file_name" title="Link to this definition"></a></dt>
+<dd><p>A hidden field used to store the file name and pass this value to the MMM script. This is a workaround since passing the value via BooleanField was not possible due to HTML limitations with FieldList.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HiddenField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>FieldList cannot enclose BooleanField or SubmitField instances due to HTML limitations.
+For more information, see: <a class="reference external" href="https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.FieldList">https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.FieldList</a></p>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">file_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(HiddenField,</span> <span class="pre">(),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">selected</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(BooleanField,</span> <span class="pre">('No</span> <span class="pre">filters</span> <span class="pre">found!',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.forms.</span></span><span class="sig-name descname"><span class="pre">JournalDataForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/forms.html#JournalDataForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.forms.JournalDataForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FlaskForm</span></code></p>
+<p>JournalDataForm is a FlaskForm for collecting and validating journal-related data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.publisher_id">
+<span class="sig-name descname"><span class="pre">publisher_id</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.publisher_id" title="Link to this definition"></a></dt>
+<dd><p>The ID of the publisher. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.eissn">
+<span class="sig-name descname"><span class="pre">eissn</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.eissn" title="Link to this definition"></a></dt>
+<dd><p>The electronic ISSN of the journal. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.title" title="Link to this definition"></a></dt>
+<dd><p>The title of the journal. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.publisher_name">
+<span class="sig-name descname"><span class="pre">publisher_name</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.publisher_name" title="Link to this definition"></a></dt>
+<dd><p>The name of the publisher. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.publisher_loc">
+<span class="sig-name descname"><span class="pre">publisher_loc</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.publisher_loc" title="Link to this definition"></a></dt>
+<dd><p>The location of the publisher. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.journal_link">
+<span class="sig-name descname"><span class="pre">journal_link</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.journal_link" title="Link to this definition"></a></dt>
+<dd><p>The URL link to the journal. Required and must be a valid URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.license_text">
+<span class="sig-name descname"><span class="pre">license_text</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.license_text" title="Link to this definition"></a></dt>
+<dd><p>The text of the license. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TextAreaField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.license_type">
+<span class="sig-name descname"><span class="pre">license_type</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.license_type" title="Link to this definition"></a></dt>
+<dd><p>The type of the license. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.license_link">
+<span class="sig-name descname"><span class="pre">license_link</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.license_link" title="Link to this definition"></a></dt>
+<dd><p>The URL link to the license. Required and must be a valid URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.copyright_holder">
+<span class="sig-name descname"><span class="pre">copyright_holder</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.copyright_holder" title="Link to this definition"></a></dt>
+<dd><p>The holder of the copyright. Required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.JournalDataForm.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><a class="headerlink" href="#webinterface.forms.JournalDataForm.submit" title="Link to this definition"></a></dt>
+<dd><p>The submit button to update the form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SubmitField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">copyright_holder</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Copyright</span> <span class="pre">Holder',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">eissn</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('EISSN',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">journal_link</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Journal</span> <span class="pre">Link',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;wtforms.validators.URL</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">license_link</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('License</span> <span class="pre">Link',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;wtforms.validators.URL</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">license_text</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(TextAreaField,</span> <span class="pre">('License</span> <span class="pre">Text',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">license_type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('License</span> <span class="pre">Type',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">publisher_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Publisher</span> <span class="pre">ID',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">publisher_loc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Publisher</span> <span class="pre">Location',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">publisher_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Publisher</span> <span class="pre">Name',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id15" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">submit</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(SubmitField,</span> <span class="pre">('Update!',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id16" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Title',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.DataRequired</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id17" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">webinterface.forms.</span></span><span class="sig-name descname"><span class="pre">UploadForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/webinterface/forms.html#UploadForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#webinterface.forms.UploadForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FlaskForm</span></code></p>
+<p>UploadForm is a FlaskForm that handles the upload and input of various files and metadata for typesetting.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.markdown">
+<span class="sig-name descname"><span class="pre">markdown</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.markdown" title="Link to this definition"></a></dt>
+<dd><p>Required field for uploading a Markdown file. Only accepts files with extensions ‘md’ or ‘markdown’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FileField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.metadata" title="Link to this definition"></a></dt>
+<dd><p>Optional field for uploading a metadata file. Only accepts files with extensions ‘yaml’ or ‘yml’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FileField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.bibtex">
+<span class="sig-name descname"><span class="pre">bibtex</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.bibtex" title="Link to this definition"></a></dt>
+<dd><p>Optional field for uploading a BibTeX file. Only accepts files with extension ‘bib’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FileField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.images">
+<span class="sig-name descname"><span class="pre">images</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.images" title="Link to this definition"></a></dt>
+<dd><p>Optional field for uploading multiple image files. Only accepts files with extensions ‘png’, ‘jpg’, or ‘jpeg’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MultipleFileField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.filter_selection">
+<span class="sig-name descname"><span class="pre">filter_selection</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.filter_selection" title="Link to this definition"></a></dt>
+<dd><p>Dynamic form field for selecting filters. Displays all filters in the filter folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FieldList</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.file_name">
+<span class="sig-name descname"><span class="pre">file_name</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.file_name" title="Link to this definition"></a></dt>
+<dd><p>Optional field for specifying individual file names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.pdf" title="Link to this definition"></a></dt>
+<dd><p>Checkbox to select PDF output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BooleanField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.html">
+<span class="sig-name descname"><span class="pre">html</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.html" title="Link to this definition"></a></dt>
+<dd><p>Checkbox to select HTML output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BooleanField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.jats">
+<span class="sig-name descname"><span class="pre">jats</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.jats" title="Link to this definition"></a></dt>
+<dd><p>Checkbox to select JATS output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BooleanField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.latex">
+<span class="sig-name descname"><span class="pre">latex</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.latex" title="Link to this definition"></a></dt>
+<dd><p>Checkbox to select LaTeX output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BooleanField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.manual_data_input">
+<span class="sig-name descname"><span class="pre">manual_data_input</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.manual_data_input" title="Link to this definition"></a></dt>
+<dd><p>Checkbox to activate manual data input instead of uploading a metadata file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BooleanField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.submit" title="Link to this definition"></a></dt>
+<dd><p>Button to submit the form and create files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SubmitField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Optional</span> <span class="pre">Metadata</span> <span class="pre">Fields</span> <span class="pre">(used</span> <span class="pre">if</span> <span class="pre">no</span> <span class="pre">metadata</span> <span class="pre">file</span> <span class="pre">is</span> <span class="pre">uploaded)</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">---------------------------------------------------------------</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.title" title="Link to this definition"></a></dt>
+<dd><p>Optional field for the article title.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.subtitle">
+<span class="sig-name descname"><span class="pre">subtitle</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.subtitle" title="Link to this definition"></a></dt>
+<dd><p>Optional field for the article subtitle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.keywords">
+<span class="sig-name descname"><span class="pre">keywords</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.keywords" title="Link to this definition"></a></dt>
+<dd><p>Optional field for article keywords. Can have between 1 and 8 entries, each being a StringField.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FieldList</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.abstract">
+<span class="sig-name descname"><span class="pre">abstract</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.abstract" title="Link to this definition"></a></dt>
+<dd><p>Optional field for the article abstract.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TextAreaField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.date">
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.date" title="Link to this definition"></a></dt>
+<dd><p>Optional field for the article year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.volume" title="Link to this definition"></a></dt>
+<dd><p>Optional field for the article volume.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IntegerField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.doi">
+<span class="sig-name descname"><span class="pre">doi</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.doi" title="Link to this definition"></a></dt>
+<dd><p>Optional field for the article DOI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.author_short">
+<span class="sig-name descname"><span class="pre">author_short</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.author_short" title="Link to this definition"></a></dt>
+<dd><p>Optional field for a short author description.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringField</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="webinterface.forms.UploadForm.authors">
+<span class="sig-name descname"><span class="pre">authors</span></span><a class="headerlink" href="#webinterface.forms.UploadForm.authors" title="Link to this definition"></a></dt>
+<dd><p>Optional field for author data. Can have between 1 and 20 entries, each being an AuthorForm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FieldList</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">abstract</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(TextAreaField,</span> <span class="pre">('Abstract',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;],</span> <span class="pre">'default':</span> <span class="pre">'Your</span> <span class="pre">abstract</span> <span class="pre">goes</span> <span class="pre">here...'})&gt;</span></em><a class="headerlink" href="#id18" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">author_short</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Author</span> <span class="pre">short',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id19" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">authors</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(FieldList,</span> <span class="pre">(&lt;UnboundField(FormField,</span> <span class="pre">(&lt;class</span> <span class="pre">'webinterface.forms.AuthorForm'&gt;,),</span> <span class="pre">{})&gt;,),</span> <span class="pre">{'min_entries':</span> <span class="pre">1,</span> <span class="pre">'max_entries':</span> <span class="pre">20})&gt;</span></em><a class="headerlink" href="#id20" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">bibtex</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(FileField,</span> <span class="pre">('BibTeX</span> <span class="pre">file</span> <span class="pre">(optional)',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;flask_wtf.file.FileAllowed</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id21" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">date</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Year',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id22" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">doi</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('DOI',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id23" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">file_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Name</span> <span class="pre">output</span> <span class="pre">files</span> <span class="pre">(optional)',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id24" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">filter_selection</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(FieldList,</span> <span class="pre">(&lt;UnboundField(FormField,</span> <span class="pre">(&lt;class</span> <span class="pre">'webinterface.forms.FilterSelectionForm'&gt;,),</span> <span class="pre">{})&gt;,),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id25" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-name descname"><span class="pre">html</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(BooleanField,</span> <span class="pre">('HTML',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id26" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id27">
+<span class="sig-name descname"><span class="pre">images</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(MultipleFileField,</span> <span class="pre">('Select</span> <span class="pre">image</span> <span class="pre">files</span> <span class="pre">(PNG,</span> <span class="pre">JPG)</span> <span class="pre">(optional)',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;flask_wtf.file.FileAllowed</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id27" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id28">
+<span class="sig-name descname"><span class="pre">jats</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(BooleanField,</span> <span class="pre">('JATS',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id28" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id29">
+<span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(FieldList,</span> <span class="pre">(&lt;UnboundField(StringField,</span> <span class="pre">('Keyword',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;],</span> <span class="pre">'default':</span> <span class="pre">'Keyword'})&gt;,),</span> <span class="pre">{'min_entries':</span> <span class="pre">1,</span> <span class="pre">'max_entries':</span> <span class="pre">8})&gt;</span></em><a class="headerlink" href="#id29" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-name descname"><span class="pre">latex</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(BooleanField,</span> <span class="pre">('LaTeX',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id30" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">manual_data_input</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(BooleanField,</span> <span class="pre">('(Optional)</span> <span class="pre">Manual</span> <span class="pre">data</span> <span class="pre">input',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id31" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id32">
+<span class="sig-name descname"><span class="pre">markdown</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(FileField,</span> <span class="pre">('Markdown</span> <span class="pre">file</span> <span class="pre">(required)',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;flask_wtf.file.FileRequired</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;flask_wtf.file.FileAllowed</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id32" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id33">
+<span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(FileField,</span> <span class="pre">('Metadata</span> <span class="pre">file</span> <span class="pre">(optional)',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;flask_wtf.file.FileAllowed</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id33" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id34">
+<span class="sig-name descname"><span class="pre">pdf</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(BooleanField,</span> <span class="pre">('PDF',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id34" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id35">
+<span class="sig-name descname"><span class="pre">submit</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(SubmitField,</span> <span class="pre">('Create</span> <span class="pre">files!',),</span> <span class="pre">{})&gt;</span></em><a class="headerlink" href="#id35" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id36">
+<span class="sig-name descname"><span class="pre">subtitle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Subtitle',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id36" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id37">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(StringField,</span> <span class="pre">('Title',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id37" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id38">
+<span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnboundField(IntegerField,</span> <span class="pre">('Volume',),</span> <span class="pre">{'validators':</span> <span class="pre">[&lt;wtforms.validators.Optional</span> <span class="pre">object&gt;]})&gt;</span></em><a class="headerlink" href="#id38" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-webinterface">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-webinterface" title="Link to this heading"></a></h2>
+<p>This package contains the web interface for the application. It is built using the Flask framework.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="start_application.html" class="btn btn-neutral float-left" title="start_application module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thomas Jurczyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

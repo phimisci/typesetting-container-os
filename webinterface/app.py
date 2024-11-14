@@ -1,3 +1,7 @@
+'''
+This module contains the Flask application for the web interface of the Typesetting Container OS tool.
+'''
+
 from flask import Flask, render_template, send_file, flash, redirect, url_for
 import subprocess
 import os
@@ -17,44 +21,18 @@ app.config['SECRET_KEY'] = 'PleaseChangeThisSecretKeyIfYouPlanToUseThisInProduct
 csrf = CSRFProtect(app)
 
 # Helper functions
-def create_metadata_yaml_from_input(upload_form) -> None:
+def create_metadata_yaml_from_input(upload_form: UploadForm) -> None:
     '''Generates a metadata.yaml file from the provided upload form data.
+
         Parameters
         ----------
-        upload_form : object
-            An object containing the article's metadata input fields. 
-            - title : str
-                The title of the article.
-            - subtitle : str
-                The subtitle of the article.
-            - authors : list
-                A list of author objects, each containing:
-                - author_name : str
-                    The name of the author.
-                - affiliations : list
-                    A list of affiliation objects, each containing:
-                    - organization : str
-                        The organization of the affiliation.
-                - email : str
-                    The email address of the author.
-                - orcid : str, optional
-                    The ORCID of the author.
-            - keywords : list
-                A list of keywords related to the article.
-            - abstract : str
-                The abstract of the article.
-            - date : str
-                The publication date of the article.
-            - volume : str
-                The volume number of the publication.
-            - doi : str
-                The DOI of the article.
-            - author_short : str
-                A short representation of the author's name.
+        upload_form : UploadForm
+            An object containing the article's metadata input fields.
 
         Returns
-            None
-                -------
+        -------
+        None
+                
     '''
     # Create a dictionary with the article data from manual input
     article_data = {
@@ -89,11 +67,13 @@ def create_metadata_yaml_from_input(upload_form) -> None:
 # Route for the home page
 @app.route('/', methods=['GET', 'POST'])
 def entry():
+    '''Redirects to the main route /home.'''
     return redirect(url_for('index'))
 
 # This is the main route which is also used to create the output files
 @app.route('/home', methods=['GET', 'POST'])
 def index():
+    '''Main route for the web interface. This route is used to create the output files.'''
     # Create form
     upload_form = UploadForm()
     # Create
@@ -224,6 +204,7 @@ def index():
 # Allows the user to change the journal metadata stored in templates/MMM_JOURNAL_METADATA.yaml
 @app.route('/journal_data', methods=['GET', 'POST'])
 def journal_data():
+    '''Route for the journal data form. This route allows the user to change the journal metadata stored in templates/MMM_JOURNAL_METADATA.yaml.'''
     # Create form
     form = JournalDataForm()
     # Load the journal data from the metadata file
@@ -263,9 +244,11 @@ def journal_data():
 # Route for the help page
 @app.route('/help')
 def help():
+    '''Route for the help page.'''
     return render_template('help.html')
 
 # Route for the imprint page
 @app.route('/imprint')
 def imprint():
+    '''Route for the imprint page.'''
     return render_template('imprint.html')

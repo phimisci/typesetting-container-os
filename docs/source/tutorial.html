@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magic Manuscript Maker – Typesetting Container OS &mdash; Typesetting Container OS 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="phimisci-typesetting-container" href="modules.html" />
+    <link rel="prev" title="Typesetting Container OS documentation" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Typesetting Container OS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pandoc">Pandoc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker">Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pulling-the-image-from-github-container-registry">Pulling the image from GitHub container registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-build-of-the-docker-image">Local build of the Docker image</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#web-interface">Web interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-files">Required files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#journal-metadata">Journal metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cli-usage-of-the-docker-container">CLI usage of the Docker container</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-lua-filters-optional">Using Lua filters (optional)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linking-images-with-pandoc-figref">Linking images with pandoc-figref</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-the-container">Customizing the container</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-the-templates">Customizing the templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-the-csl-file">Customizing the CSL file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-the-filters">Customizing the filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-the-fonts">Customizing the fonts</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#q-a">Q&amp;A</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#why-should-i-use-the-typesetting-container-instead-of-just-using-pandoc-directly">Why should I use the typesetting container instead of just using Pandoc directly?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#about">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#versions">Versions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1.0.0 (31.10.2024)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Typesetting Container OS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Magic Manuscript Maker – Typesetting Container OS</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="magic-manuscript-maker-typesetting-container-os">
+<h1>Magic Manuscript Maker – Typesetting Container OS<a class="headerlink" href="#magic-manuscript-maker-typesetting-container-os" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This repository contains the code for the typesetting container of the
+journal “Philosophy and the Mind Sciences” (PhiMiSci). The typesetting
+container can be used to convert journal articles submitted in Markdown,
+which can be processed with Pandoc, into various formats. The container
+is currently configured to output the following formats:</p>
+<ol class="arabic simple">
+<li><p>PDF</p></li>
+<li><p>HTML</p></li>
+<li><p>JATS</p></li>
+<li><p>TEX</p></li>
+</ol>
+<p>The typesetting container was originally developed for the workflow of
+the journal “Philosophy and the Mind Sciences.” The version provided
+here is an extension of this workflow and can also be used by other
+journals.</p>
+<p>The container is configured to be run via Docker. It can be operated
+either through the command line interface or started as a web
+application. The typesetting container can be used directly with the
+supplied standard templates without any further configuration. However,
+you can also adjust or replace the standard templates with custom
+templates.</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<section id="pandoc">
+<h3>Pandoc<a class="headerlink" href="#pandoc" title="Link to this heading"></a></h3>
+<p>The typesetting workflow is designed to process Markdown files with
+<a class="reference external" href="https://pandoc.org">Pandoc</a> and convert them into the four mentioned
+output formats. Pandoc is a universal document converter that is
+open-source and was developed by John MacFarlane. The typesetting
+workflow accepts the Markdown flavor supported by Pandoc version 3.4,
+including citations in the Citeproc format. Additionally, Lua filters
+can be used to influence the conversion, with only one filter for image
+referencing being provided by default.</p>
+</section>
+<section id="docker">
+<h3>Docker<a class="headerlink" href="#docker" title="Link to this heading"></a></h3>
+<p>Docker is a container management system that allows applications to be
+isolated and executed in containers. Docker containers can be run on any
+system where Docker is installed, regardless of the environment. The
+typesetting container is provided as a Docker image, which includes all
+the necessary components to perform file conversions. The container can
+be run on any system with Docker installed and offers a simple way to
+use the typesetting workflow without needing to install Pandoc and LaTeX
+locally.</p>
+<p>To install the Docker engine on your system, follow the instructions on
+the <a class="reference external" href="https://docs.docker.com/get-docker/">Docker website</a>.</p>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Once the Docker engine is installed, there are two ways to create the
+container image: either by building the image from the Dockerfile or by
+pulling the image from GitHub Container Registry.</p>
+<section id="pulling-the-image-from-github-container-registry">
+<h3>Pulling the image from GitHub container registry<a class="headerlink" href="#pulling-the-image-from-github-container-registry" title="Link to this heading"></a></h3>
+<p>The typesetting container image can be pulled from the GitHub Container
+Registry. To do this, open a shell and run the following command:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">ghcr.io/phimisci/typesetting-container-os:latest</span></code></p>
+</section>
+<section id="local-build-of-the-docker-image">
+<h3>Local build of the Docker image<a class="headerlink" href="#local-build-of-the-docker-image" title="Link to this heading"></a></h3>
+<p>You can also build the Docker image locally from the Dockerfile provided
+in the repository. To do so, clone the repository to your local machine.
+Afterwards, open a shell in the root directory of the repository and run
+the following command (here on Linux):</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">-t</span> <span class="pre">typesetting-container</span> <span class="pre">.</span></code></p>
+<p>The tag <code class="docutils literal notranslate"><span class="pre">typesetting-container</span></code> can be chosen arbitrarily. It is used
+to reference the image more easily later. The build process may take
+some time, as the image is created based on <code class="docutils literal notranslate"><span class="pre">pandoc/latex</span></code> and
+requires the installation of additional packages.</p>
+</section>
+</section>
+<section id="web-interface">
+<h2>Web interface<a class="headerlink" href="#web-interface" title="Link to this heading"></a></h2>
+<p>To run the container using the web interface, use the following command:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-p</span> <span class="pre">5000:5000</span> <span class="pre">typesetting-container</span> <span class="pre">--webinterface</span></code></p>
+<p>We assume that the container is named <code class="docutils literal notranslate"><span class="pre">typesetting-container</span></code>. If you
+are using the image from the GitHub Container Registry, the image name
+is <code class="docutils literal notranslate"><span class="pre">ghcr.io/phimisci/typesetting-container-os:latest</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">5000:5000</span></code> flag maps port 5000 of the container to port 5000 of
+the host system.</p>
+<p>A local web server with a Flask application will then be started, which
+can be accessed through a browser or by typing <code class="docutils literal notranslate"><span class="pre">http://localhost:5000</span></code>
+in the address bar of your browser. The web interface simplifies working
+with the typesetting workflow. The files can be downloaded directly
+after conversion.</p>
+<p>However, running the previous command, the created files are are only
+temporarily saved in the container. After closing the container, the
+files are no longer available. If the files are to be stored
+permanently, a volume must be mounted. To store all files in the current
+directory, the following command can be used:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-p</span> <span class="pre">5000:5000</span> <span class="pre">--volume</span> <span class="pre">&quot;$(pwd):/app/article&quot;</span> <span class="pre">typesetting-container</span> <span class="pre">--webinterface</span></code></p>
+<section id="required-files">
+<h3>Required files<a class="headerlink" href="#required-files" title="Link to this heading"></a></h3>
+<p>To convert an article using the typesetting workflow, at least the
+Markdown file must be uploaded. Additionally, a BibTeX file and image
+files can also be uploaded. The metadata of the article can either be
+entered directly in the web interface or uploaded via a YAML file.</p>
+<p>Once all the information is ready, the desired output formats can be
+selected, and the conversion can be started. After the process is
+complete, the files will automatically be downloaded as a ZIP file. The
+ZIP file also contains a log file that includes any error messages or
+warnings that may have occurred during the conversion.</p>
+<p>If the standard template is used, the metadata in YAML format must
+contain the following fields:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;The</span><span class="nv"> </span><span class="s">Eternal</span><span class="nv"> </span><span class="s">Boy:</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">Study</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">Agelessness</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Memory&#39;</span>
+<span class="nt">subtitle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exploring Identity, Temporality, and the Philosophy of Neverland</span>
+<span class="nt">author</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Wendy Darling</span>
+<span class="w">  </span><span class="nt">affiliation</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">University of Oxford</span>
+<span class="w">  </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">w.darling@oxford.ac.uk</span>
+<span class="w">  </span><span class="nt">orcid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0000-0002-5678-9012</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Peter Pan</span>
+<span class="w">  </span><span class="nt">affiliation</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SOAS London</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Neverland</span>
+<span class="w">  </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">peter.pan@neverland.com</span>
+<span class="w">  </span><span class="nt">orcid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0000-1101-1234-5678</span>
+<span class="nt">keywords</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Agelessness</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Memory theory</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Identity</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Temporality</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Neverland metaphysics</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fantasy ontology</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Child psychology</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Flight dynamics</span>
+<span class="nt">abstract</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<span class="w">  </span><span class="no">How does the notion of agelessness shape identity and memory in an eternal youth like Peter Pan? This article examines the metaphysics of agelessness through the lens of Peter Pan’s unchanging form and his shifting memories, drawing from theories of temporality and identity. We argue that Neverland serves as a temporal vacuum, where time functions differently, creating unique challenges to traditional philosophical concepts of identity and selfhood. The implications of living outside of time, where one remains physically unchanged but psychologically impacted by infinite experiences, are explored. This work also touches on the phenomenology of flight, a central theme in Peter Pan’s existence, as it symbolizes his defiance of physical and temporal limitations. The article situates these discussions within the broader debate on fantasy ontology and its relation to real-world psychological and philosophical frameworks.</span>
+<span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2024&#39;</span>
+<span class="nt">volume</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+<span class="nt">doi</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.1111/12345678</span>
+<span class="nt">author-short</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Darling &amp; Pan</span>
+<span class="nn">...</span>
+</pre></div>
+</div>
+<p>Don’t forget to create a YAML block in the YAML file by using the three
+dashes <code class="docutils literal notranslate"><span class="pre">---</span></code> at the beginning and <code class="docutils literal notranslate"><span class="pre">...</span></code> at the end of the metadata
+block.</p>
+</section>
+<section id="journal-metadata">
+<h3>Journal metadata<a class="headerlink" href="#journal-metadata" title="Link to this heading"></a></h3>
+<p>If you want to change the metadata of the journal, you can either do so
+directly in the web or by setting up a container with a custom metadata
+file for your journal. To customize the typesetting workflow container,
+please refer to the section “Customizing the Container.”</p>
+</section>
+</section>
+<section id="cli-usage-of-the-docker-container">
+<h2>CLI usage of the Docker container<a class="headerlink" href="#cli-usage-of-the-docker-container" title="Link to this heading"></a></h2>
+<p>After the image has been created, the container can be used. First, a
+shell must be opened in the directory where the article files are
+located (Markdown, Metadata, BibTeX (optional), and images). In the
+directory, the following command can now be executed in the command line
+to create a PDF file from the source files:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">--volume</span> <span class="pre">&quot;$(pwd):/app/article&quot;</span> <span class="pre">mmm-typesetting-container</span> <span class="pre">--markdown_file</span> <span class="pre">Wirtz_2024.md</span> <span class="pre">--metadata_file</span> <span class="pre">metadata.yaml</span> <span class="pre">--bibtex_file</span> <span class="pre">Wirtz_2024.bib</span> <span class="pre">--pdf</span></code></p>
+<p>Using Windows (PowerShell), the command is as follows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">--volume</span> <span class="pre">&quot;${PWD}:/app/article&quot;</span> <span class="pre">mmm-typesetting-container</span> <span class="pre">--markdown_file</span> <span class="pre">Wirtz_2024.md</span> <span class="pre">--metadata_file</span> <span class="pre">metadata.yaml</span> <span class="pre">--bibtex_file</span> <span class="pre">Wirtz_2024.bib</span> <span class="pre">--pdf</span></code></p>
+<p>If an HTML version of the article should also be created, a
+corresponding flag can simply be added:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">--volume</span> <span class="pre">&quot;${PWD}:/app/article&quot;</span> <span class="pre">mmm-typesetting-container</span> <span class="pre">--markdown_file</span> <span class="pre">Wirtz_2024.md</span> <span class="pre">--metadata_file</span> <span class="pre">metadata.yaml</span> <span class="pre">--bibtex_file</span> <span class="pre">Wirtz_2024.bib</span> <span class="pre">--pdf</span> <span class="pre">--html</span></code></p>
+<p>Now both the PDF and the HTML are created. After the command is
+executed, a PDF file named <code class="docutils literal notranslate"><span class="pre">Wirtz_2024.pdf</span></code> and an HTML file named
+<code class="docutils literal notranslate"><span class="pre">Wirtz_2024.html</span></code> should be created in the directory. The filenames
+may vary depending on the container configuration. Additionally, a file
+named <code class="docutils literal notranslate"><span class="pre">PROCESS.log</span></code> is created, which contains any error messages or
+warnings (for example, if there is a Markdown syntax error that leads to
+a failed conversion). You can optionally also pass a filename for the
+output files using the <code class="docutils literal notranslate"><span class="pre">--filename</span></code> flag.</p>
+<section id="using-lua-filters-optional">
+<h3>Using Lua filters (optional)<a class="headerlink" href="#using-lua-filters-optional" title="Link to this heading"></a></h3>
+<p>The typesetting container also supports the use of <a class="reference external" href="https://pandoc.org/lua-filters.html">Lua
+filters</a> for Pandoc to influence
+the conversion of the files. The filters can be added when calling the
+container via <code class="docutils literal notranslate"><span class="pre">--lua-filter</span></code>. In the vanilla version of the
+typesetting container, there is the option to call the
+<code class="docutils literal notranslate"><span class="pre">pandoc-figref.lua</span></code> filter, which allows referencing images and tables
+in Markdown. More information about this filter can be found
+<a href="#id2"><span class="problematic" id="id3">`here &lt;&gt;`__</span></a>. A call to create a PDF using the <code class="docutils literal notranslate"><span class="pre">pandoc-figref.lua</span></code>
+filter is as follows (Linux):</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">--volume</span> <span class="pre">&quot;$(pwd):/app/article&quot;</span> <span class="pre">mmm-typesetting-container</span> <span class="pre">--markdown_file</span> <span class="pre">Wirtz_2024.md</span> <span class="pre">--metadata_file</span> <span class="pre">metadata.yaml</span> <span class="pre">--bibtex_file</span> <span class="pre">Wirtz_2024.bib</span> <span class="pre">--pdf</span> <span class="pre">--lua-filter</span> <span class="pre">pandoc-figref.lua</span></code></p>
+<section id="linking-images-with-pandoc-figref">
+<h4>Linking images with pandoc-figref<a class="headerlink" href="#linking-images-with-pandoc-figref" title="Link to this heading"></a></h4>
+<p>If an image is to be linked within the text, a corresponding identifier
+must first be added to the image (see the following example):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>![This is a caption.](figure1.png){#fig:figure1}
+</pre></div>
+</div>
+<p>Now the image can be easily referenced in the text using the reference
+<code class="docutils literal notranslate"><span class="pre">fig:figure1</span></code> by prefixing it with an <code class="docutils literal notranslate"><span class="pre">&#64;</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">See</span> <span class="n">also</span> <span class="n">figure</span> <span class="nd">@fig</span><span class="p">:</span><span class="n">figure1</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Currently, references are only supported in the output formats PDF, TEX,
+and HTML.</p>
+</section>
+</section>
+</section>
+<section id="customizing-the-container">
+<h2>Customizing the container<a class="headerlink" href="#customizing-the-container" title="Link to this heading"></a></h2>
+<p>To customize the container, for example for a different journal, all
+files in the <code class="docutils literal notranslate"><span class="pre">templates</span></code>, <code class="docutils literal notranslate"><span class="pre">filter</span></code>, <code class="docutils literal notranslate"><span class="pre">csl</span></code>, and <code class="docutils literal notranslate"><span class="pre">fonts</span></code> folders
+can be replaced.</p>
+<section id="customizing-the-templates">
+<h3>Customizing the templates<a class="headerlink" href="#customizing-the-templates" title="Link to this heading"></a></h3>
+<p>The templates for the various output formats (PDF, HTML, JATS, TEX) are
+located in the <code class="docutils literal notranslate"><span class="pre">templates</span></code> folder. The templates are written in LaTeX
+or HTML and contain special variables that are replaced by Pandoc and
+taken from the metadata (YAML) file. Accordingly, the templates and the
+YAML metadata file must be closely coordinated. The templates can be
+customized as desired to change the appearance of the output, adhering
+to the specifications of Pandoc, see <a class="reference external" href="https://pandoc.org/MANUAL.html#templates">Pandoc
+Documentation</a>. The
+templates for the various output formats are found in the <code class="docutils literal notranslate"><span class="pre">templates</span></code>
+folder. It is important to ensure that the files are named according to
+the scheme <code class="docutils literal notranslate"><span class="pre">MMM_PDF_TEMPLATE.html</span></code> and saved in the <code class="docutils literal notranslate"><span class="pre">templates</span></code>
+folder. Additionally, the values of variables used in the template can
+be adjusted in the YAML file <code class="docutils literal notranslate"><span class="pre">MMM_JOURNAL_METADATA.yaml</span></code> to influence
+the output. This file also contains additional information used by
+Pandoc to format the output. These options can also be adjusted as
+needed.</p>
+<p>After replacing the templates, the Docker image must be rebuilt to apply
+the changes and use the new templates.</p>
+<p>Pandoc templates are quite complex but offer a very high degree of
+individual customization. For starters, it can be helpful to use an
+existing and freely available template of a journal and adapt it to your
+own needs.</p>
+<p>There is one important caveat when changing the templates and the
+metadata structure in particular: Even though it is not a problem to
+upload the new metadata files in the web interface and create output
+files based on the new templates, the manual input of metadata in the
+web interface will most likely not work with a changed metadata
+structure. If you want to allow manual input of new metadata, you must
+adjust the web interface accordingly.</p>
+</section>
+<section id="customizing-the-csl-file">
+<h3>Customizing the CSL file<a class="headerlink" href="#customizing-the-csl-file" title="Link to this heading"></a></h3>
+<p>Just like with the templates, the CSL file in the <code class="docutils literal notranslate"><span class="pre">csl</span></code> folder can be
+customized to adopt the citation style of the journal. The CSL file must
+be in CSL format and can be edited with any editor. The CSL file must be
+placed in the <code class="docutils literal notranslate"><span class="pre">csl</span></code> folder and named as follows: <code class="docutils literal notranslate"><span class="pre">MMM_CSL.csl</span></code>. The
+CSL file can be used after rebuilding the Docker image.</p>
+</section>
+<section id="customizing-the-filters">
+<h3>Customizing the filters<a class="headerlink" href="#customizing-the-filters" title="Link to this heading"></a></h3>
+<p>Additional Lua filters can be easily stored in the <code class="docutils literal notranslate"><span class="pre">filter</span></code> folder and
+then passed as a list when calling the container in the CLI. The filters
+can be named arbitrarily but must be in Lua format and end with a
+<code class="docutils literal notranslate"><span class="pre">.lua</span></code> extension. The filters can be used to influence the conversion
+of the files, for example, to apply special formatting or adjustments.</p>
+<p>Here is an example call to use the filters <code class="docutils literal notranslate"><span class="pre">my-filter.lua</span></code> and
+<code class="docutils literal notranslate"><span class="pre">my-filter-2.lua</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">--volume</span> <span class="pre">&quot;$(pwd):/app/article&quot;</span> <span class="pre">mmm-typesetting-container</span> <span class="pre">--markdown_file</span> <span class="pre">Wirtz_2024.md</span> <span class="pre">--metadata_file</span> <span class="pre">metadata.yaml</span> <span class="pre">--bibtex_file</span> <span class="pre">Wirtz_2024.bib</span> <span class="pre">--pdf</span> <span class="pre">--lua-filter</span> <span class="pre">my-filter.lua</span> <span class="pre">--lua-filter</span> <span class="pre">my-filter-2.lua</span></code></p>
+<p>It is important to note that the order of the filter calls matters, as
+the filters are called sequentially and the output of the previous
+filter serves as the input for the next filter.</p>
+</section>
+<section id="customizing-the-fonts">
+<h3>Customizing the fonts<a class="headerlink" href="#customizing-the-fonts" title="Link to this heading"></a></h3>
+<p>Adding fonts is a bit more complex and requires modifying the
+Dockerfile. The fonts must be in OpenType format and can be placed in
+the <code class="docutils literal notranslate"><span class="pre">fonts</span></code> folder. In the Dockerfile, the fonts must then be
+installed by adding the corresponding commands (see the relevant section
+in the Dockerfile). After adding the fonts and rebuilding the Docker
+image, the fonts can be used in the templates. By default, the <a class="reference external" href="https://en.wikipedia.org/wiki/Linux_Libertine">Linux
+Libertine</a> and
+<a class="reference external" href="https://fonts.google.com/specimen/Open+Sans">OpenSans</a> fonts are
+provided.</p>
+</section>
+</section>
+<section id="q-a">
+<h2>Q&amp;A<a class="headerlink" href="#q-a" title="Link to this heading"></a></h2>
+<section id="why-should-i-use-the-typesetting-container-instead-of-just-using-pandoc-directly">
+<h3>Why should I use the typesetting container instead of just using Pandoc directly?<a class="headerlink" href="#why-should-i-use-the-typesetting-container-instead-of-just-using-pandoc-directly" title="Link to this heading"></a></h3>
+<p>The typesetting container was primarily developed for editorial offices
+that use Markdown as the central format for their submissions and where
+it cannot be assumed that all editors have a deeper understanding of
+Pandoc. The container simplifies the conversion process by bundling the
+necessary steps in a Docker container and making them accessible via a
+simple command line or web interface, so that less technically savvy
+people can also use the typesetting workflow.</p>
+<p>It also eliminates the need to install Pandoc and LaTeX locally, which
+can be a hurdle for many editors. The typesetting workflow is managed
+and versioned in one central place, while the editorial offices can work
+based on the current image. The container can also be easily operated on
+a server, further facilitating the centralization and handling of the
+workflow.</p>
+</section>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h2>
+<p>Contributions to the typesetting container are welcome. If you have any
+suggestions, improvements, or bug fixes, please feel free to open an
+issue or create a pull request. The typesetting container is intended to
+be a flexible and adaptable tool for various journals, and your
+contributions can help make it even better.</p>
+</section>
+<section id="about">
+<h2>About<a class="headerlink" href="#about" title="Link to this heading"></a></h2>
+<p>This application was developed by Thomas Jurczyk (thomjur on GitHub) for
+the journal <a class="reference external" href="https://philosophymindscience.org/">Philosophy and the Mind
+Sciences</a> as part of a project
+funded by the German Research Foundation (DFG).</p>
+</section>
+<section id="versions">
+<h2>Versions<a class="headerlink" href="#versions" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>1.0.0 (31.10.2024)<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial release of the typesetting container</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Typesetting Container OS documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="phimisci-typesetting-container" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thomas Jurczyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

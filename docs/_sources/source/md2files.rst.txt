@@ -1,0 +1,7 @@
+md2files module
+===============
+
+.. automodule:: md2files
+   :members:
+   :undoc-members:
+   :show-inheritance:

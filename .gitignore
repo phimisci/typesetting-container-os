@@ -6,3 +6,4 @@ DEPRECATED/
 __pycache__/
 *.pyc
 __mypycache__/
+_docs/

@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>md2files &mdash; Typesetting Container OS 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Typesetting Container OS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/modules.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Typesetting Container OS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">md2files</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for md2files</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This script converts Markdown files to various output formats using Pandoc.</span>
+<span class="sd">Currently supported output formats are: PDF, HTML, LaTeX, and JATS.</span>
+<span class="sd">The container expects a yaml file with metadata and a markdown file</span>
+<span class="sd">Optionally, a BibTeX bibliography and individual Lua filters can be passed.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># Version: 1.0.0</span>
+<span class="c1"># Date: 2024-10-04</span>
+<span class="c1"># by Thomas Jurczyk (c)</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">shutil</span>
+
+<div class="viewcode-block" id="parse_arguments">
+<a class="viewcode-back" href="../source/md2files.html#md2files.parse_arguments">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_arguments</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Parse command line arguments.&#39;&#39;&#39;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Convert Markdown file to multiple output files using Pandoc (PDF, HTML, XML and more).&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;markdown_file&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The markdown file. This file should be in Markdown format and stored in the subfolder &#39;article/&#39;.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;metadata_file&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The metadata file to use. This file should be in YAML format and it should be produced by XML2YAML based on an OJS article metadata file.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--bibtex&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;bibtex_file&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The BibTeX file. This file should be in BibTeX format and stored in the subfolder &#39;article/&#39;. The file must have a .bib extension!&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--filter&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Pandoc Lua-filters to use. These filters must be stored in the subfolder &#39;filter/&#39;. Please provide the filter name WITH the file extension.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--html&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Generate HTML file based on the template &#39;MMM_HTML_TEMPLATE.html&#39; in the subfolder called &#39;templates/&#39;.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--jats&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Generate JATS file.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--tex&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Generate LaTeX file.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--pdf&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Generate PDF file based on the template &#39;MMM_PDF_TEMPLATE.tex&#39; in the subfolder called &#39;templates/&#39;.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--filename&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The name of the output file. This is an optional argument. If not provided, the name of the markdown file will be used.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="logging">
+<a class="viewcode-back" href="../source/md2files.html#md2files.logging">[docs]</a>
+<span class="k">def</span> <span class="nf">logging</span><span class="p">(</span><span class="n">LOGFILE</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CompletedProcess</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write the stdout and stderr of a command execution to a log file.</span>
+<span class="sd">    </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        LOGFILE : str</span>
+<span class="sd">            The name of the log file.</span>
+<span class="sd">        result : subprocess.CompletedProcess</span>
+<span class="sd">            The result of the command execution.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">LOGFILE</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="copy_files_to_app_dir">
+<a class="viewcode-back" href="../source/md2files.html#md2files.copy_files_to_app_dir">[docs]</a>
+<span class="k">def</span> <span class="nf">copy_files_to_app_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Copy image files to from /app/article to /app working directory. Necessary for image processing using Docker.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;article/&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.jpg&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.jpeg&quot;</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;article/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/app&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../source/md2files.html#md2files.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Main function to convert the markdown file to various output formats.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args : argparse.Namespace</span>
+<span class="sd">            The command line arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">INMARKDOWN</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;article/</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">markdown_file</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">INMETADATA</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;article/</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">metadata_file</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">INBIBTEX</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;article/</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">bibtex_file</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">bibtex_file</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">PLAINFILENAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;article/&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filename</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">INMARKDOWN</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">LOGFILE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;article/PROCESS.log&quot;</span>
+
+    <span class="c1"># Set output filenames</span>
+    <span class="n">PDFFILE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PLAINFILENAME</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+    <span class="n">HTMLFILE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PLAINFILENAME</span><span class="si">}</span><span class="s2">.html&quot;</span>
+    <span class="n">TEXFILE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PLAINFILENAME</span><span class="si">}</span><span class="s2">.tex&quot;</span>
+    <span class="n">JATSFILE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PLAINFILENAME</span><span class="si">}</span><span class="s2">.jats&quot;</span>
+    <span class="n">BIBLIOGRAPHY</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">INBIBTEX</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">INBIBTEX</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">copy_files_to_app_dir</span><span class="p">()</span>
+
+    <span class="c1"># PDF generation</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">pdf</span><span class="p">:</span>
+        <span class="n">PDF_BASE_COMMAND</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;--pdf-engine=xelatex&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--template=templates/MMM_PDF_TEMPLATE.tex&quot;</span><span class="p">,</span> <span class="s2">&quot;--bibliography&quot;</span><span class="p">,</span> <span class="n">BIBLIOGRAPHY</span><span class="p">,</span> <span class="s2">&quot;--csl=csl/MMM_CSL.csl&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span> <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">PDFFILE</span>
+        <span class="p">]</span> <span class="k">if</span> <span class="n">BIBLIOGRAPHY</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;--pdf-engine=xelatex&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--template=templates/MMM_PDF_TEMPLATE.tex&quot;</span><span class="p">,</span> <span class="s2">&quot;--csl=csl/MMM_CSL.csl&quot;</span><span class="p">,</span> <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span>
+            <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">PDFFILE</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">):</span>
+                <span class="n">PDF_BASE_COMMAND</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--lua-filter=filter/</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">PDF_BASE_COMMAND</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">(</span><span class="n">LOGFILE</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># LaTeX generation</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tex</span><span class="p">:</span>
+        <span class="n">TEX_COMMAND</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;--pdf-engine=xelatex&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--template=templates/MMM_PDF_TEMPLATE.tex&quot;</span><span class="p">,</span> <span class="s2">&quot;--bibliography&quot;</span><span class="p">,</span> <span class="n">BIBLIOGRAPHY</span><span class="p">,</span> <span class="s2">&quot;--csl=csl/MMM_CSL.csl&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span> <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">TEXFILE</span>
+        <span class="p">]</span> <span class="k">if</span> <span class="n">BIBLIOGRAPHY</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;--pdf-engine=xelatex&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--template=templates/MMM_PDF_TEMPLATE.tex&quot;</span><span class="p">,</span> <span class="s2">&quot;--csl=csl/MMM_CSL.csl&quot;</span><span class="p">,</span> <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span>
+            <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">TEXFILE</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">):</span>
+                <span class="n">TEX_COMMAND</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--lua-filter=filter/</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">TEX_COMMAND</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">(</span><span class="n">LOGFILE</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># JATS generation</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">jats</span><span class="p">:</span>
+        <span class="n">JATS_COMMAND</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;-N&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--bibliography&quot;</span><span class="p">,</span> <span class="n">BIBLIOGRAPHY</span><span class="p">,</span> <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span> <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span>
+            <span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;jats+element_citations&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">JATSFILE</span>
+        <span class="p">]</span> <span class="k">if</span> <span class="n">BIBLIOGRAPHY</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;-N&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span> <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span> <span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;jats+element_citations&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">JATSFILE</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">):</span>
+                <span class="n">JATS_COMMAND</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--lua-filter=filter/</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">JATS_COMMAND</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">(</span><span class="n">LOGFILE</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># HTML generation</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">html</span><span class="p">:</span>
+        <span class="n">HTML_COMMAND</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;--mathjax&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--template=templates/MMM_HTML_TEMPLATE.html&quot;</span><span class="p">,</span> <span class="s2">&quot;--bibliography&quot;</span><span class="p">,</span> <span class="n">BIBLIOGRAPHY</span><span class="p">,</span> <span class="s2">&quot;--csl=csl/MMM_CSL.csl&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span> <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">HTMLFILE</span>
+        <span class="p">]</span> <span class="k">if</span> <span class="n">BIBLIOGRAPHY</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s2">&quot;pandoc&quot;</span><span class="p">,</span> <span class="s2">&quot;--citeproc&quot;</span><span class="p">,</span> <span class="s2">&quot;--number-sections&quot;</span><span class="p">,</span> <span class="s2">&quot;--mathjax&quot;</span><span class="p">,</span> <span class="s2">&quot;--from&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--template=templates/MMM_HTML_TEMPLATE.html&quot;</span><span class="p">,</span> <span class="s2">&quot;--csl=csl/MMM_CSL.csl&quot;</span><span class="p">,</span> <span class="s2">&quot;templates/MMM_JOURNAL_METADATA.yaml&quot;</span><span class="p">,</span>
+            <span class="n">INMETADATA</span><span class="p">,</span> <span class="n">INMARKDOWN</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">HTMLFILE</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filter</span><span class="p">):</span>
+                <span class="n">HTML_COMMAND</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--lua-filter=filter/</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">HTML_COMMAND</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">(</span><span class="n">LOGFILE</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conversion finished.&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_arguments</span><span class="p">()</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thomas Jurczyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

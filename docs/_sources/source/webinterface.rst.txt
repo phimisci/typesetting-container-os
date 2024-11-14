@@ -1,0 +1,29 @@
+webinterface package
+====================
+
+Submodules
+----------
+
+webinterface.app module
+-----------------------
+
+.. automodule:: webinterface.app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+webinterface.forms module
+-------------------------
+
+.. automodule:: webinterface.forms
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: webinterface
+   :members:
+   :undoc-members:
+   :show-inheritance:
