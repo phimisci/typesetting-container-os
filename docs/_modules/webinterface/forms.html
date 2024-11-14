@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>webinterface.forms &mdash; Typesetting Container OS 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Typesetting Container OS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Typesetting Container OS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">webinterface.forms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for webinterface.forms</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This module contains the FlaskForm classes used in the web interface of the typesetting tool.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">flask_wtf</span> <span class="kn">import</span> <span class="n">FlaskForm</span>
+<span class="kn">from</span> <span class="nn">flask_wtf.file</span> <span class="kn">import</span> <span class="n">FileRequired</span><span class="p">,</span> <span class="n">FileField</span><span class="p">,</span> <span class="n">FileAllowed</span><span class="p">,</span> <span class="n">MultipleFileField</span>
+<span class="kn">from</span> <span class="nn">wtforms</span> <span class="kn">import</span> <span class="n">SubmitField</span><span class="p">,</span> <span class="n">FieldList</span><span class="p">,</span> <span class="n">FormField</span><span class="p">,</span> <span class="n">BooleanField</span><span class="p">,</span> <span class="n">HiddenField</span><span class="p">,</span> <span class="n">StringField</span><span class="p">,</span> <span class="n">TextAreaField</span><span class="p">,</span> <span class="n">IntegerField</span>
+<span class="kn">from</span> <span class="nn">wtforms.validators</span> <span class="kn">import</span> <span class="n">DataRequired</span><span class="p">,</span> <span class="n">URL</span><span class="p">,</span> <span class="n">Optional</span>
+
+<div class="viewcode-block" id="AffiliationForm">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.forms.AffiliationForm">[docs]</a>
+<span class="k">class</span> <span class="nc">AffiliationForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A form for capturing affiliation information.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    organization: StringField</span>
+<span class="sd">        An optional field to input the name of the organization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">organization</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Organization&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span></div>
+
+
+<div class="viewcode-block" id="AuthorForm">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.forms.AuthorForm">[docs]</a>
+<span class="k">class</span> <span class="nc">AuthorForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    AuthorForm is a FlaskForm that collects information about an author.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    author_name : StringField</span>
+<span class="sd">        The name of the author. This field is optional.</span>
+<span class="sd">    affiliations : FieldList</span>
+<span class="sd">        A list of affiliations for the author, containing a minimum of 1 and a maximum of 3 AffiliationForm entries.</span>
+<span class="sd">    email : StringField</span>
+<span class="sd">        The email address of the author. This field is optional.</span>
+<span class="sd">    orcid : StringField</span>
+<span class="sd">        The ORCID identifier of the author. This field is optional.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">author_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="n">affiliations</span> <span class="o">=</span> <span class="n">FieldList</span><span class="p">(</span><span class="n">FormField</span><span class="p">(</span><span class="n">AffiliationForm</span><span class="p">),</span> <span class="n">min_entries</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_entries</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;E-Mail&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="n">orcid</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;ORCID&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span></div>
+
+
+<div class="viewcode-block" id="FilterSelectionForm">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.forms.FilterSelectionForm">[docs]</a>
+<span class="k">class</span> <span class="nc">FilterSelectionForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FilterSelectionForm is a form used in a Flask web application to handle filter selections.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    selected: BooleanField</span>
+<span class="sd">        A boolean field that indicates whether any filters are selected. Defaults to &quot;No filters found!&quot;.</span>
+
+<span class="sd">        .. :no-index:</span>
+<span class="sd">        </span>
+<span class="sd">    file_name: HiddenField</span>
+<span class="sd">        A hidden field used to store the file name and pass this value to the MMM script. This is a workaround since passing the value via BooleanField was not possible due to HTML limitations with FieldList.</span>
+
+<span class="sd">        .. :no-index:</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">        FieldList cannot enclose BooleanField or SubmitField instances due to HTML limitations.</span>
+<span class="sd">        For more information, see: https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.FieldList</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">selected</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s2">&quot;No filters found!&quot;</span><span class="p">)</span>
+    <span class="c1"># The hidden field is used to store the file name and to pass this value to the MMM script.</span>
+    <span class="c1"># This is a workaround since passing the value via BooleanField was not possible, see also FieldList docs:</span>
+    <span class="c1"># &quot;Note: Due to a limitation in how HTML sends values, FieldList cannot enclose BooleanField or SubmitField instances.&quot;</span>
+    <span class="c1"># https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.FieldList</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">HiddenField</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="JournalDataForm">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.forms.JournalDataForm">[docs]</a>
+<span class="k">class</span> <span class="nc">JournalDataForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    JournalDataForm is a FlaskForm for collecting and validating journal-related data.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    publisher_id : StringField</span>
+<span class="sd">        The ID of the publisher. Required.</span>
+<span class="sd">    eissn : StringField</span>
+<span class="sd">        The electronic ISSN of the journal. Required.</span>
+<span class="sd">    title : StringField</span>
+<span class="sd">        The title of the journal. Required.</span>
+<span class="sd">    publisher_name : StringField</span>
+<span class="sd">        The name of the publisher. Required.</span>
+<span class="sd">    publisher_loc : StringField</span>
+<span class="sd">        The location of the publisher. Required.</span>
+<span class="sd">    journal_link : StringField</span>
+<span class="sd">        The URL link to the journal. Required and must be a valid URL.</span>
+<span class="sd">    license_text : TextAreaField</span>
+<span class="sd">        The text of the license. Required.</span>
+<span class="sd">    license_type : StringField</span>
+<span class="sd">        The type of the license. Required.</span>
+<span class="sd">    license_link : StringField</span>
+<span class="sd">        The URL link to the license. Required and must be a valid URL.</span>
+<span class="sd">    copyright_holder : StringField</span>
+<span class="sd">        The holder of the copyright. Required.</span>
+<span class="sd">    submit : SubmitField</span>
+<span class="sd">        The submit button to update the form.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Journal section</span>
+    <span class="n">publisher_id</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Publisher ID&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    <span class="n">eissn</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;EISSN&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    <span class="n">publisher_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Publisher Name&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    <span class="n">publisher_loc</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Publisher Location&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    <span class="n">journal_link</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Journal Link&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">(),</span> <span class="n">URL</span><span class="p">()])</span>
+    
+    <span class="c1"># License section</span>
+    <span class="n">license_text</span> <span class="o">=</span> <span class="n">TextAreaField</span><span class="p">(</span><span class="s1">&#39;License Text&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    <span class="n">license_type</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;License Type&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    <span class="n">license_link</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;License Link&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">(),</span> <span class="n">URL</span><span class="p">()])</span>
+    
+    <span class="c1"># Copyright section</span>
+    <span class="n">copyright_holder</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Copyright Holder&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">DataRequired</span><span class="p">()])</span>
+    
+    <span class="c1"># Submit button</span>
+    <span class="n">submit</span> <span class="o">=</span> <span class="n">SubmitField</span><span class="p">(</span><span class="s1">&#39;Update!&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UploadForm">
+<a class="viewcode-back" href="../../source/webinterface.html#webinterface.forms.UploadForm">[docs]</a>
+<span class="k">class</span> <span class="nc">UploadForm</span><span class="p">(</span><span class="n">FlaskForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    UploadForm is a FlaskForm that handles the upload and input of various files and metadata for typesetting.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    markdown : FileField</span>
+<span class="sd">        Required field for uploading a Markdown file. Only accepts files with extensions &#39;md&#39; or &#39;markdown&#39;.</span>
+<span class="sd">    metadata : FileField</span>
+<span class="sd">        Optional field for uploading a metadata file. Only accepts files with extensions &#39;yaml&#39; or &#39;yml&#39;.</span>
+<span class="sd">    bibtex : FileField</span>
+<span class="sd">        Optional field for uploading a BibTeX file. Only accepts files with extension &#39;bib&#39;.</span>
+<span class="sd">    images : MultipleFileField</span>
+<span class="sd">        Optional field for uploading multiple image files. Only accepts files with extensions &#39;png&#39;, &#39;jpg&#39;, or &#39;jpeg&#39;.</span>
+<span class="sd">    filter_selection : FieldList</span>
+<span class="sd">        Dynamic form field for selecting filters. Displays all filters in the filter folder.</span>
+<span class="sd">    file_name : StringField</span>
+<span class="sd">        Optional field for specifying individual file names.</span>
+<span class="sd">    pdf : BooleanField</span>
+<span class="sd">        Checkbox to select PDF output.</span>
+<span class="sd">    html : BooleanField</span>
+<span class="sd">        Checkbox to select HTML output.</span>
+<span class="sd">    jats : BooleanField</span>
+<span class="sd">        Checkbox to select JATS output.</span>
+<span class="sd">    latex : BooleanField</span>
+<span class="sd">        Checkbox to select LaTeX output.</span>
+<span class="sd">    manual_data_input : BooleanField</span>
+<span class="sd">        Checkbox to activate manual data input instead of uploading a metadata file.</span>
+<span class="sd">    submit : SubmitField</span>
+<span class="sd">        Button to submit the form and create files.</span>
+
+<span class="sd">    Optional Metadata Fields (used if no metadata file is uploaded)</span>
+<span class="sd">    ---------------------------------------------------------------</span>
+<span class="sd">    title : StringField</span>
+<span class="sd">        Optional field for the article title.</span>
+<span class="sd">    subtitle : StringField</span>
+<span class="sd">        Optional field for the article subtitle.</span>
+<span class="sd">    keywords : FieldList</span>
+<span class="sd">        Optional field for article keywords. Can have between 1 and 8 entries, each being a StringField.</span>
+<span class="sd">    abstract : TextAreaField</span>
+<span class="sd">        Optional field for the article abstract.</span>
+<span class="sd">    date : StringField</span>
+<span class="sd">        Optional field for the article year.</span>
+<span class="sd">    volume : IntegerField</span>
+<span class="sd">        Optional field for the article volume.</span>
+<span class="sd">    doi : StringField</span>
+<span class="sd">        Optional field for the article DOI.</span>
+<span class="sd">    author_short : StringField</span>
+<span class="sd">        Optional field for a short author description.</span>
+<span class="sd">    authors : FieldList</span>
+<span class="sd">        Optional field for author data. Can have between 1 and 20 entries, each being an AuthorForm.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">markdown</span> <span class="o">=</span> <span class="n">FileField</span><span class="p">(</span><span class="s1">&#39;Markdown file (required)&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">FileRequired</span><span class="p">(),</span> <span class="n">FileAllowed</span><span class="p">([</span><span class="s2">&quot;md&quot;</span><span class="p">,</span> <span class="s2">&quot;markdown&quot;</span><span class="p">])])</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">FileField</span><span class="p">(</span><span class="s1">&#39;Metadata file (optional)&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">FileAllowed</span><span class="p">([</span><span class="s2">&quot;yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;yml&quot;</span><span class="p">])])</span>
+    <span class="n">bibtex</span> <span class="o">=</span> <span class="n">FileField</span><span class="p">(</span><span class="s1">&#39;BibTeX file (optional)&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">FileAllowed</span><span class="p">([</span><span class="s2">&quot;bib&quot;</span><span class="p">])])</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="n">MultipleFileField</span><span class="p">(</span><span class="s1">&#39;Select image files (PNG, JPG) (optional)&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">FileAllowed</span><span class="p">([</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">])])</span>
+    <span class="c1"># Dynamic form field for filters</span>
+    <span class="c1"># Displays all filters in the filter folder</span>
+    <span class="n">filter_selection</span> <span class="o">=</span> <span class="n">FieldList</span><span class="p">(</span><span class="n">FormField</span><span class="p">(</span><span class="n">FilterSelectionForm</span><span class="p">))</span>
+    <span class="c1"># StringField to pass individual file names</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Name output files (optional)&#39;</span><span class="p">)</span>
+    <span class="c1"># BooleandField to select PDF output</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s1">&#39;PDF&#39;</span><span class="p">)</span>
+    <span class="c1"># BooleandField to select HTML output</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s1">&#39;HTML&#39;</span><span class="p">)</span>
+    <span class="c1"># BooleanField to select JATS output</span>
+    <span class="n">jats</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s1">&#39;JATS&#39;</span><span class="p">)</span>
+    <span class="c1"># BooleanField to select LaTeX output</span>
+    <span class="n">latex</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s1">&#39;LaTeX&#39;</span><span class="p">)</span>
+    <span class="c1"># Select if metadata yaml upload or manual data input should be activated</span>
+    <span class="n">manual_data_input</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="s1">&#39;(Optional) Manual data input&#39;</span><span class="p">)</span>
+    <span class="c1"># Submit button</span>
+    <span class="n">submit</span> <span class="o">=</span> <span class="n">SubmitField</span><span class="p">(</span><span class="s1">&#39;Create files!&#39;</span><span class="p">)</span>
+    <span class="c1">### The following fields are optional and are used if no metadata file is uploaded</span>
+    <span class="c1"># Article data</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="n">subtitle</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Subtitle&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="n">keywords</span> <span class="o">=</span> <span class="n">FieldList</span><span class="p">(</span><span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Keyword&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()],</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Keyword&quot;</span><span class="p">),</span> <span class="n">min_entries</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_entries</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">abstract</span> <span class="o">=</span> <span class="n">TextAreaField</span><span class="p">(</span><span class="s1">&#39;Abstract&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()],</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Your abstract goes here...&quot;</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="n">volume</span> <span class="o">=</span> <span class="n">IntegerField</span><span class="p">(</span><span class="s1">&#39;Volume&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;DOI&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="c1"># Author data</span>
+    <span class="n">author_short</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="s1">&#39;Author short&#39;</span><span class="p">,</span> <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="n">Optional</span><span class="p">()])</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">FieldList</span><span class="p">(</span><span class="n">FormField</span><span class="p">(</span><span class="n">AuthorForm</span><span class="p">),</span> <span class="n">min_entries</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_entries</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Thomas Jurczyk.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

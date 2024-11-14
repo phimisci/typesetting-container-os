@@ -1,0 +1,7 @@
+start\_application module
+=========================
+
+.. automodule:: start_application
+   :members:
+   :undoc-members:
+   :show-inheritance:
