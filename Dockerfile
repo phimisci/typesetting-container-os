@@ -12,14 +12,18 @@ RUN python3 -m venv /opt/flask_app
 
 # Copy files and folders
 COPY templates /app/templates
-COPY images /app/images
 COPY csl /app/csl
 COPY requirements.txt /app/requirements.txt
 COPY md2files.py /app/md2files.py
 COPY start_application.py /app/start_application.py
-COPY article /app/article
 COPY filter /app/filter
 COPY webinterface /app/webinterface
+
+# Create article folder
+RUN mkdir /app/article
+
+# Create images folder
+RUN mkdir /app/images
 
 # Activate virtual environment and install requirements
 RUN /opt/flask_app/bin/pip install -r /app/requirements.txt
