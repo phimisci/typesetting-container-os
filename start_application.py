@@ -27,7 +27,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--filter", "-f", nargs="+", help="Pandoc Lua-filters to use. These filters must be stored in the subfolder 'filter/'. Please provide the filter name WITH the file extension.")
     parser.add_argument("--html", action="store_true", help="Generate HTML file based on the template 'MMM_HTML_TEMPLATE.tex' in the subfolder called 'templates/'.")
     parser.add_argument("--jats", action="store_true", help="Generate JATS file.")
-    parser.add_argument("--latex", action="store_true", help="Generate LaTeX file.")
+    parser.add_argument("--tex", action="store_true", help="Generate LaTeX file.")
     parser.add_argument("--pdf", action="store_true", help="Generate PDF file based on the template 'MMM_PDF_TEMPLATE.tex' in the subfolder called 'templates/'.")
     parser.add_argument("--filename", type=str, help="The name of the output file. This is an optional argument. If not provided, the name of the markdown file will be used.")
     return parser.parse_args()
@@ -69,8 +69,8 @@ def main(args) -> None:
             command.append("--pdf")
         if args.jats:
             command.append("--jats")
-        if args.latex:
-            command.append("--latex")
+        if args.tex:
+            command.append("--tex")
         if args.filename:
             command.append("--filename")
             command.append(args.filename)
