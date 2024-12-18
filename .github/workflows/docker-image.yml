@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "phimisci-typesetting-container" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "phimisci-typesetting-container" ]
 
 jobs:
 
@@ -19,7 +19,7 @@ jobs:
       run: echo "${{ secrets.PHIMISCI_TS_OS_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       
     - name: Build Docker image
-      run: docker build -t ghcr.io/${{ github.repository }}:latest .
+      run: docker build -t ghcr.io/${{ github.repository }}-phimisci:latest .
       
     - name: Push Docker image
-      run: docker push ghcr.io/${{ github.repository }}:latest
+      run: docker push ghcr.io/${{ github.repository }}-phimisci:latest
