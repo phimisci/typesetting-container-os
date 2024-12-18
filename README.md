@@ -116,7 +116,7 @@ Now both the PDF and the HTML are created. After the command is executed, a PDF 
 ### Using Lua filters (optional)
 The typesetting container also supports the use of [Lua filters](https://pandoc.org/lua-filters.html) for Pandoc to influence the conversion of the files. The filters can be added when calling the container via `--lua-filter`. In the vanilla version of the typesetting container, there is the option to call the `pandoc-figref.lua` filter, which allows referencing images and tables in Markdown. More information about this filter can be found [here](). A call to create a PDF using the `pandoc-figref.lua` filter is as follows (Linux):
 
-`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf --lua-filter pandoc-figref.lua`
+`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf --filter pandoc-figref.lua`
 
 #### Linking images with pandoc-figref
 If an image is to be linked within the text, a corresponding identifier must first be added to the image (see the following example):
@@ -153,7 +153,7 @@ Additional Lua filters can be easily stored in the `filter` folder and then pass
 
 Here is an example call to use the filters `my-filter.lua` and `my-filter-2.lua`:
 
-`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf --lua-filter my-filter.lua --lua-filter my-filter-2.lua`
+`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf --filter my-filter.lua my-filter-2.lua`
 
 It is important to note that the order of the filter calls matters, as the filters are called sequentially and the output of the previous filter serves as the input for the next filter.
 

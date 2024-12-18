@@ -1,37 +1,53 @@
 ---
 journal:
-  publisher-id: 1234-5678
-  eissn: 1234-5678
-  title: Journal of Magic Manuscripts
-  publisher-name: University Press
-  publisher-loc: Bochum, Germany 
-  link: https://journalofmagicmanuscripts.org
+  publisher-id: 2699-0369
+  eissn: 2699-0369
+  title: Philosophy and the Mind Sciences
+  publisher-name: Ruhr-Universität Bochum
+  publisher-loc: Bochum, Germany
 license:
   text: This article is distributed under the terms of the Creative Commons Attribution 4.0 International License, which permits unrestricted use, distribution, and reproduction in any medium, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made.
   type: CC-BY 4.0
   link: https://creativecommons.org/licenses/by/4.0/
 copyright:
   holder: The authors
+documentclass: article
+classoption: "fleqn,twoside"
 fontfamily: lmodern
 mainfont: Linux Libertine O
 mainfontoptions:
-- Mapping=tex-text
-- BoldFont=LinLibertineOB 
+  - Mapping=tex-text
+  - BoldFont=LinLibertineOB
 sansfont: Open Sans
 monofont: Open Sans
 mathfont: Libertinus Math
 mathfontoptions:
-- AutoFakeBold
+  - AutoFakeBold
 lang: en-US
 mainlang: english
+otherlang: sanskrit
 polyglossia-lang:
-- name: english
-  options:
+  - name: english
+    options: {}
+polyglossia-otherlangs:
+  - name: sanskrit
+    options: {}
 fontsize: 12pt
+geometry: "left=3.5cm,right=3.5cm,top=3cm,bottom=4.5cm,footskip=1.5cm,a4paper"
+linestretch: 1.0
+version: 2.0
+indent: yes
 link-citations: true
 citecolor: Blue
 filecolor: Blue
 linkcolor: Blue
 urlcolor: black
+graphics: true
+logo: ./images/phimisci-logo-eps.eps
+license-url: 'https://creativecommons.org/licenses/by/4.0/'
+license-fig: 'https://philosophymindscience.org/public/journals/19/cc-by-4.png'
+license-description: '\textbf{Open Access}\newline This article is distributed under the terms of the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted use, distribution, and reproduction in any medium, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made.'
+license-html: '<p><b>Open Access</b><br>This article is distributed under the terms of the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>, which permits unrestricted use, distribution, and reproduction in any medium, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made.</p>'
+orcid-fig: 'https://philosophymindscience.org/public/journals/19/orcid.png'
 reference-section-title: References
 ...

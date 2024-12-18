@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-venv \
+    ghostscript \
     && rm -rf /var/lib/apt/lists/*
 
 # Create virtual environment for Flask application
@@ -18,12 +19,10 @@ COPY md2files.py /app/md2files.py
 COPY start_application.py /app/start_application.py
 COPY filter /app/filter
 COPY webinterface /app/webinterface
+COPY images /app/images
 
 # Create article folder
 RUN mkdir /app/article
-
-# Create images folder
-RUN mkdir /app/images
 
 # Activate virtual environment and install requirements
 RUN /opt/flask_app/bin/pip install -r /app/requirements.txt
@@ -45,7 +44,11 @@ COPY fonts/opensans/. /usr/share/fonts/opensans/
 RUN fc-cache -f -v
 
 # Install tlmgr and packages
-RUN tlmgr install orcidlink fancyhdr
+RUN tlmgr install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc 
+RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
+RUN tlmgr install xurl bookmark
+RUN tlmgr install enumitem
+RUN tlmgr update --self --all
 
 # Set the working directory
 WORKDIR /app
