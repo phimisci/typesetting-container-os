@@ -20,6 +20,7 @@ COPY start_application.py /app/start_application.py
 COPY filter /app/filter
 COPY webinterface /app/webinterface
 COPY images /app/images
+COPY tex /app/tex
 
 # Create article folder
 RUN mkdir /app/article

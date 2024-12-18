@@ -22,6 +22,7 @@ def parse_arguments():
     parser.add_argument("--jats", action="store_true", help="Generate JATS file.")
     parser.add_argument("--tex", action="store_true", help="Generate LaTeX file.")
     parser.add_argument("--pdf", action="store_true", help="Generate PDF file based on the template 'MMM_PDF_TEMPLATE.tex' in the subfolder called 'templates/'.")
+    parser.add_argument("--proof", action="store_true", help="Generate proof PDF file based on the template 'MMM_PDF_TEMPLATE.tex' in the subfolder called 'templates/'.")
     parser.add_argument("--filename", type=str, help="The name of the output file. This is an optional argument. If not provided, the name of the markdown file will be used.")
     return parser.parse_args()
 
@@ -72,6 +73,7 @@ def main(args) -> None:
 
     # Set output filenames
     PDFFILE = f"{PLAINFILENAME}.pdf"
+    PROOFFILE = f"{PLAINFILENAME}-PROOF.pdf"
     HTMLFILE = f"{PLAINFILENAME}.html"
     TEXFILE = f"{PLAINFILENAME}.tex"
     JATSFILE = f"{PLAINFILENAME}.jats"
@@ -84,7 +86,7 @@ def main(args) -> None:
         PDF_BASE_COMMAND = [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
             "--template=templates/MMM_PDF_TEMPLATE.tex", "--bibliography", BIBLIOGRAPHY, "--csl=csl/MMM_CSL.csl",
-            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "-o", PDFFILE
+            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", PDFFILE
         ] if BIBLIOGRAPHY else [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
             "--template=templates/MMM_PDF_TEMPLATE.tex", "--csl=csl/MMM_CSL.csl", "templates/MMM_JOURNAL_METADATA.yaml",
@@ -96,12 +98,28 @@ def main(args) -> None:
         result = subprocess.run(PDF_BASE_COMMAND, capture_output=True, text=True)
         logging(LOGFILE, result)
 
+    # PDF proof generation
+    if args.proof:
+        PDF_BASE_COMMAND = [
+            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
+            "--template=templates/MMM_PDF_TEMPLATE.tex", "--bibliography", BIBLIOGRAPHY, "--csl=csl/MMM_CSL.csl",
+            "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", "--include-in-header=tex/proofs.tex", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", PROOFFILE
+        ] if BIBLIOGRAPHY else [
+            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
+            "--template=templates/MMM_PDF_TEMPLATE.tex", "--csl=csl/MMM_CSL.csl", "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", "--include-in-header=tex/proofs.tex", INMETADATA, INMARKDOWN, "-o", PROOFFILE
+        ]
+        if args.filter:
+            for filter in reversed(args.filter):
+                PDF_BASE_COMMAND.insert(2, f"--lua-filter=filter/{filter}")
+        result = subprocess.run(PDF_BASE_COMMAND, capture_output=True, text=True)
+        logging(LOGFILE, result)
+    
     # LaTeX generation
     if args.tex:
         TEX_COMMAND = [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
             "--template=templates/MMM_PDF_TEMPLATE.tex", "--bibliography", BIBLIOGRAPHY, "--csl=csl/MMM_CSL.csl",
-            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "-o", TEXFILE
+            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", TEXFILE
         ] if BIBLIOGRAPHY else [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
             "--template=templates/MMM_PDF_TEMPLATE.tex", "--csl=csl/MMM_CSL.csl", "templates/MMM_JOURNAL_METADATA.yaml",

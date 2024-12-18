@@ -29,6 +29,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--jats", action="store_true", help="Generate JATS file.")
     parser.add_argument("--tex", action="store_true", help="Generate LaTeX file.")
     parser.add_argument("--pdf", action="store_true", help="Generate PDF file based on the template 'MMM_PDF_TEMPLATE.tex' in the subfolder called 'templates/'.")
+    parser.add_argument("--proof", action="store_true", help="Generate proof PDF file based on the template 'MMM_PDF_TEMPLATE.tex' in the subfolder called 'templates/'.")
     parser.add_argument("--filename", type=str, help="The name of the output file. This is an optional argument. If not provided, the name of the markdown file will be used.")
     return parser.parse_args()
 
@@ -71,6 +72,8 @@ def main(args) -> None:
             command.append("--jats")
         if args.tex:
             command.append("--tex")
+        if args.proof:
+            command.append("--proof")
         if args.filename:
             command.append("--filename")
             command.append(args.filename)

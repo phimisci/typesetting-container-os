@@ -5,10 +5,7 @@ journal:
   title: Philosophy and the Mind Sciences
   publisher-name: Ruhr-Universität Bochum
   publisher-loc: Bochum, Germany
-license:
-  text: This article is distributed under the terms of the Creative Commons Attribution 4.0 International License, which permits unrestricted use, distribution, and reproduction in any medium, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made.
-  type: CC-BY 4.0
-  link: https://creativecommons.org/licenses/by/4.0/
+license: '\href{https://creativecommons.org/licenses/by/4.0/}{\includegraphics[width=1cm]{images/cc-by-4.eps}} \textcolor{dark-gray}{\copyright The author(s).}'
 copyright:
   holder: The authors
 documentclass: article
