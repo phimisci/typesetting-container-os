@@ -45,11 +45,11 @@ COPY fonts/opensans/. /usr/share/fonts/opensans/
 RUN fc-cache -f -v
 
 # Install tlmgr and packages
+RUN tlmgr update --self --all
 RUN tlmgr install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc 
 RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
 RUN tlmgr install xurl bookmark
 RUN tlmgr install enumitem
-RUN tlmgr update --self --all
 
 # Set the working directory
 WORKDIR /app
