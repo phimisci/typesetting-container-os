@@ -1,4 +1,4 @@
-FROM pandoc/latex:3.4.0-ubuntu
+FROM pandoc/latex:3.6.4.0-ubuntu
 
 # Install packages
 RUN apt-get update && apt-get install -y \
