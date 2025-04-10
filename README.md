@@ -174,6 +174,8 @@ Contributions to the typesetting container are welcome. If you have any suggesti
 This application was developed by Thomas Jurczyk (thomjur on GitHub) for the journal [Philosophy and the Mind Sciences](https://philosophymindscience.org/) as part of a project funded by the German Research Foundation (DFG).
 
 ## Versions
+### 1.0.1 (10.04.2025)
+- Bumping Pandoc to version 3.6.4.0
 
 ### 1.0.0 (31.10.2024)
 - Initial release of the typesetting container
