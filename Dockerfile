@@ -1,4 +1,4 @@
-FROM pandoc/latex:3.4.0-ubuntu
+FROM pandoc/latex:3.6.4.0-ubuntu
 
 # Install packages
 RUN apt-get update && apt-get install -y \
@@ -45,6 +45,7 @@ COPY fonts/opensans/. /usr/share/fonts/opensans/
 RUN fc-cache -f -v
 
 # Install tlmgr and packages
+RUN tlmgr update --self --all
 RUN tlmgr install orcidlink fancyhdr
 
 # Set the working directory
