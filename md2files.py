@@ -21,8 +21,8 @@ def parse_arguments():
     parser.add_argument("--html", action="store_true", help="Generate HTML file based on the template 'MMM_HTML_TEMPLATE.html' in the subfolder called 'templates/'.")
     parser.add_argument("--jats", action="store_true", help="Generate JATS file.")
     parser.add_argument("--tex", action="store_true", help="Generate LaTeX file.")
-    parser.add_argument("--pdf", action="store_true", help="Generate PDF file based on the template 'MMM_PDF_TEMPLATE.tex' in the subfolder called 'templates/'.")
-    parser.add_argument("--proof", action="store_true", help="Generate proof PDF file based on the template 'MMM_PDF_TEMPLATE.tex' in the subfolder called 'templates/'.")
+    parser.add_argument("--pdf", action="store_true", help="Generate PDF file based on a template from the subfolder 'templates/'.")
+    parser.add_argument("--proof", action="store_true", help="Generate proof PDF file based on a template from the subfolder 'templates/'.")
     parser.add_argument("--filename", type=str, help="The name of the output file. This is an optional argument. If not provided, the name of the markdown file will be used.")
     return parser.parse_args()
 
@@ -78,6 +78,8 @@ def main(args) -> None:
     TEXFILE = f"{PLAINFILENAME}.tex"
     JATSFILE = f"{PLAINFILENAME}.jats"
     BIBLIOGRAPHY = f"{INBIBTEX}" if INBIBTEX else None
+    CSLFILE = "csl/apa7-single-spaced.csl" 
+    TEXTEMPLATE = "templates/phimisci-classic.tex"
 
     copy_files_to_app_dir()
 
@@ -85,11 +87,11 @@ def main(args) -> None:
     if args.pdf:
         PDF_BASE_COMMAND = [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template=templates/MMM_PDF_TEMPLATE.tex", "--bibliography", BIBLIOGRAPHY, "--csl=csl/MMM_CSL.csl",
+            "--template", TEXTEMPLATE, "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
             "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", PDFFILE
         ] if BIBLIOGRAPHY else [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template=templates/MMM_PDF_TEMPLATE.tex", "--csl=csl/MMM_CSL.csl", "templates/MMM_JOURNAL_METADATA.yaml",
+            "--template", TEXTEMPLATE, "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml",
             INMETADATA, INMARKDOWN, "-o", PDFFILE
         ]
         if args.filter:
@@ -102,11 +104,11 @@ def main(args) -> None:
     if args.proof:
         PDF_BASE_COMMAND = [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template=templates/MMM_PDF_TEMPLATE.tex", "--bibliography", BIBLIOGRAPHY, "--csl=csl/MMM_CSL.csl",
+            "--template", TEXTEMPLATE, "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
             "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", "--include-in-header=tex/proofs.tex", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", PROOFFILE
         ] if BIBLIOGRAPHY else [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template=templates/MMM_PDF_TEMPLATE.tex", "--csl=csl/MMM_CSL.csl", "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", "--include-in-header=tex/proofs.tex", INMETADATA, INMARKDOWN, "-o", PROOFFILE
+            "--template", TEXTEMPLATE, "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", "--include-in-header=tex/proofs.tex", INMETADATA, INMARKDOWN, "-o", PROOFFILE
         ]
         if args.filter:
             for filter in reversed(args.filter):
@@ -118,11 +120,11 @@ def main(args) -> None:
     if args.tex:
         TEX_COMMAND = [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template=templates/MMM_PDF_TEMPLATE.tex", "--bibliography", BIBLIOGRAPHY, "--csl=csl/MMM_CSL.csl",
+            "--template", TEXTEMPLATE, "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
             "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", TEXFILE
         ] if BIBLIOGRAPHY else [
             "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template=templates/MMM_PDF_TEMPLATE.tex", "--csl=csl/MMM_CSL.csl", "templates/MMM_JOURNAL_METADATA.yaml",
+            "--template", TEXTEMPLATE, "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml",
             INMETADATA, INMARKDOWN, "-o", TEXFILE
         ]
         if args.filter:
@@ -151,11 +153,11 @@ def main(args) -> None:
     if args.html:
         HTML_COMMAND = [
             "pandoc", "--citeproc", "--number-sections", "--mathjax", "--from", "markdown",
-            "--template=templates/MMM_HTML_TEMPLATE.html", "--bibliography", BIBLIOGRAPHY, "--csl=csl/MMM_CSL.csl",
+            "--template=templates/MMM_HTML_TEMPLATE.html", "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
             "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "-o", HTMLFILE
         ] if BIBLIOGRAPHY else [
             "pandoc", "--citeproc", "--number-sections", "--mathjax", "--from", "markdown",
-            "--template=templates/MMM_HTML_TEMPLATE.html", "--csl=csl/MMM_CSL.csl", "templates/MMM_JOURNAL_METADATA.yaml",
+            "--template=templates/MMM_HTML_TEMPLATE.html", "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml",
             INMETADATA, INMARKDOWN, "-o", HTMLFILE
         ]
         if args.filter:
