@@ -13,17 +13,71 @@ import argparse, os, subprocess, shutil
 
 def parse_arguments():
     '''Parse command line arguments.'''
-    parser = argparse.ArgumentParser(description="Convert Markdown file to multiple output files using Pandoc (PDF, HTML, XML and more).")
-    parser.add_argument("markdown_file", type=str, help="The markdown file. This file should be in Markdown format and stored in the subfolder 'article/'.")
-    parser.add_argument("metadata_file", type=str, help="The metadata file to use. This file should be in YAML format and it should be produced by XML2YAML based on an OJS article metadata file.")
-    parser.add_argument("--bibtex", dest="bibtex_file", type=str, help="The BibTeX file. This file should be in BibTeX format and stored in the subfolder 'article/'. The file must have a .bib extension!")
-    parser.add_argument("--filter", "-f", nargs="+", help="Pandoc Lua-filters to use. These filters must be stored in the subfolder 'filter/'. Please provide the filter name WITH the file extension.")
-    parser.add_argument("--html", action="store_true", help="Generate HTML file based on the template 'MMM_HTML_TEMPLATE.html' in the subfolder called 'templates/'.")
-    parser.add_argument("--jats", action="store_true", help="Generate JATS file.")
-    parser.add_argument("--tex", action="store_true", help="Generate LaTeX file.")
-    parser.add_argument("--pdf", action="store_true", help="Generate PDF file based on a template from the subfolder 'templates/'.")
-    parser.add_argument("--proof", action="store_true", help="Generate proof PDF file based on a template from the subfolder 'templates/'.")
-    parser.add_argument("--filename", type=str, help="The name of the output file. This is an optional argument. If not provided, the name of the markdown file will be used.")
+    parser = argparse.ArgumentParser(
+        description="Convert Markdown file to multiple output files using " \
+                    "Pandoc (PDF, HTML, XML and more)."
+                    )
+    parser.add_argument(
+        "markdown_file", 
+        type=str, 
+        help="The markdown file. This file should be in Markdown format and " \
+             "stored in the subfolder 'article/'."
+        )
+    parser.add_argument(
+        "metadata_file", 
+        type=str, 
+        help="The metadata file to use. This file should be in YAML format and" \
+        " it should be produced by XML2YAML based on an OJS article metadata file."
+        )
+    parser.add_argument(
+        "--bibtex", 
+        dest="bibtex_file", 
+        type=str, 
+        help="The BibTeX file. This file should be in BibTeX format and stored" \
+             " in the subfolder 'article/'. The file must have a .bib extension!"
+        )
+    parser.add_argument(
+        "--filter", 
+        "-f", 
+        nargs="+", 
+        help="Pandoc Lua-filters to use. These filters must be stored in the" \
+        " subfolder 'filter/'. Please provide the filter name WITH the " \
+        "file extension."
+        )
+    parser.add_argument(
+        "--html", 
+        action="store_true", 
+        help="Generate HTML file based on the template 'MMM_HTML_TEMPLATE.html'" \
+             " in the subfolder called 'templates/'."
+        )
+    parser.add_argument(
+        "--jats", 
+        action="store_true", 
+        help="Generate JATS file."
+        )
+    parser.add_argument(
+        "--tex", 
+        action="store_true", 
+        help="Generate LaTeX file."
+        )
+    parser.add_argument(
+        "--pdf", 
+        action="store_true", 
+        help="Generate PDF file based on a template from the subfolder" \
+        " 'templates/'."
+        )
+    parser.add_argument(
+        "--proof", 
+        action="store_true", 
+        help="Generate proof PDF file based on a template from the " \
+        "subfolder 'templates/'."
+        )
+    parser.add_argument(
+        "--filename", 
+        type=str, 
+        help="The name of the output file. This is an optional argument. " \
+        "If not provided, the name of the markdown file will be used."
+        )
     return parser.parse_args()
 
 def logging(LOGFILE: str, result: subprocess.CompletedProcess) -> None:
@@ -46,9 +100,12 @@ def logging(LOGFILE: str, result: subprocess.CompletedProcess) -> None:
         f.write(result.stderr)
 
 def copy_files_to_app_dir() -> None:
-    """Copy image files to from /app/article to /app working directory. Necessary for image processing using Docker."""
+    """
+    Copy image files to from /app/article to /app working directory. 
+    Necessary for image processing using Docker.
+    """
     for filename in os.listdir("article/"):
-        if filename.endswith(".png") or filename.endswith(".jpg") or filename.endswith(".jpeg"):
+        if filename.endswith((".png", ".jpg", ".jpeg")):
             shutil.copy2(f"article/{filename}", "/app")
 
 def main(args) -> None:
@@ -68,7 +125,10 @@ def main(args) -> None:
     INMETADATA = f"article/{args.metadata_file}"
     INBIBTEX = f"article/{args.bibtex_file}" if args.bibtex_file else None
 
-    PLAINFILENAME = os.path.join("article/", args.filename) if args.filename else os.path.splitext(INMARKDOWN)[0]
+    if args.filename:
+        PLAINFILENAME = os.path.join("article/", args.filename)  
+    else: 
+        PLAINFILENAME = os.path.splitext(INMARKDOWN)[0]
     LOGFILE = f"article/PROCESS.log"
 
     # Set output filenames
@@ -86,12 +146,17 @@ def main(args) -> None:
     # PDF generation
     if args.pdf:
         PDF_BASE_COMMAND = [
-            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template", TEXTEMPLATE, "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
-            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", PDFFILE
+            "pandoc", "-s", "--citeproc", "--number-sections", 
+            "--pdf-engine=xelatex", "--from", "markdown",
+            "--template", TEXTEMPLATE, 
+            "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
+            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, 
+            "tex/bibliography-preamble.tex", "-o", PDFFILE
         ] if BIBLIOGRAPHY else [
-            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template", TEXTEMPLATE, "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml",
+            "pandoc", "-s", "--citeproc", "--number-sections", 
+            "--pdf-engine=xelatex", "--from", "markdown",
+            "--template", TEXTEMPLATE, "--csl", CSLFILE, 
+            "templates/MMM_JOURNAL_METADATA.yaml",
             INMETADATA, INMARKDOWN, "-o", PDFFILE
         ]
         if args.filter:
@@ -103,12 +168,20 @@ def main(args) -> None:
     # PDF proof generation
     if args.proof:
         PDF_BASE_COMMAND = [
-            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
+            "pandoc", "-s", "--citeproc", "--number-sections", 
+            "--pdf-engine=xelatex", "--from", "markdown",
             "--template", TEXTEMPLATE, "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
-            "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", "--include-in-header=tex/proofs.tex", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", PROOFFILE
+            "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", 
+            "--include-in-header=tex/proofs.tex", 
+            INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", 
+            PROOFFILE
         ] if BIBLIOGRAPHY else [
-            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template", TEXTEMPLATE, "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml", "-V proofs=1", "--include-in-header=tex/proofs.tex", INMETADATA, INMARKDOWN, "-o", PROOFFILE
+            "pandoc", "-s", "--citeproc", "--number-sections", 
+            "--pdf-engine=xelatex", "--from", "markdown",
+            "--template", TEXTEMPLATE, "--csl", CSLFILE, 
+            "templates/MMM_JOURNAL_METADATA.yaml", 
+            "-V proofs=1", "--include-in-header=tex/proofs.tex", 
+            INMETADATA, INMARKDOWN, "-o", PROOFFILE
         ]
         if args.filter:
             for filter in reversed(args.filter):
@@ -119,12 +192,17 @@ def main(args) -> None:
     # LaTeX generation
     if args.tex:
         TEX_COMMAND = [
-            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template", TEXTEMPLATE, "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
-            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", TEXFILE
+            "pandoc", "-s", "--citeproc", "--number-sections", 
+            "--pdf-engine=xelatex", "--from", "markdown",
+            "--template", TEXTEMPLATE, "--bibliography", BIBLIOGRAPHY, 
+            "--csl", CSLFILE,
+            "templates/MMM_JOURNAL_METADATA.yaml", 
+            INMETADATA, INMARKDOWN, "tex/bibliography-preamble.tex", "-o", TEXFILE
         ] if BIBLIOGRAPHY else [
-            "pandoc", "-s", "--citeproc", "--number-sections", "--pdf-engine=xelatex", "--from", "markdown",
-            "--template", TEXTEMPLATE, "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml",
+            "pandoc", "-s", "--citeproc", "--number-sections", 
+            "--pdf-engine=xelatex", "--from", "markdown",
+            "--template", TEXTEMPLATE, "--csl", CSLFILE, 
+            "templates/MMM_JOURNAL_METADATA.yaml",
             INMETADATA, INMARKDOWN, "-o", TEXFILE
         ]
         if args.filter:
@@ -136,12 +214,16 @@ def main(args) -> None:
     # JATS generation
     if args.jats:
         JATS_COMMAND = [
-            "pandoc", "--citeproc", "--number-sections", "-s", "-N", "--from", "markdown",
-            "--bibliography", BIBLIOGRAPHY, "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN,
+            "pandoc", "--citeproc", "--number-sections", "-s", "-N", 
+            "--from", "markdown",
+            "--bibliography", BIBLIOGRAPHY, "templates/MMM_JOURNAL_METADATA.yaml", 
+            INMETADATA, INMARKDOWN,
             "-t", "jats+element_citations", "-o", JATSFILE
         ] if BIBLIOGRAPHY else [
-            "pandoc", "--citeproc", "--number-sections", "-s", "-N", "--from", "markdown",
-            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "-t", "jats+element_citations", "-o", JATSFILE
+            "pandoc", "--citeproc", "--number-sections", "-s", "-N", "--from", 
+            "markdown",
+            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, 
+            "-t", "jats+element_citations", "-o", JATSFILE
         ]
         if args.filter:
             for filter in reversed(args.filter):
@@ -152,12 +234,17 @@ def main(args) -> None:
     # HTML generation
     if args.html:
         HTML_COMMAND = [
-            "pandoc", "--citeproc", "--number-sections", "--mathjax", "--from", "markdown",
-            "--template=templates/MMM_HTML_TEMPLATE.html", "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
-            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, "-o", HTMLFILE
+            "pandoc", "--citeproc", "--number-sections", "--mathjax", "--from", 
+            "markdown",
+            "--template=templates/MMM_HTML_TEMPLATE.html", 
+            "--bibliography", BIBLIOGRAPHY, "--csl", CSLFILE,
+            "templates/MMM_JOURNAL_METADATA.yaml", INMETADATA, INMARKDOWN, 
+            "-o", HTMLFILE
         ] if BIBLIOGRAPHY else [
-            "pandoc", "--citeproc", "--number-sections", "--mathjax", "--from", "markdown",
-            "--template=templates/MMM_HTML_TEMPLATE.html", "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml",
+            "pandoc", "--citeproc", "--number-sections", "--mathjax", 
+            "--from", "markdown",
+            "--template=templates/MMM_HTML_TEMPLATE.html", 
+            "--csl", CSLFILE, "templates/MMM_JOURNAL_METADATA.yaml",
             INMETADATA, INMARKDOWN, "-o", HTMLFILE
         ]
         if args.filter:
