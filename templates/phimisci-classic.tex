@@ -224,6 +224,12 @@ $endif$
 $for(header-includes)$
 $header-includes$
 $endfor$
+$if(proofs)$
+\usepackage{lineno}
+\linenumbers
+\usepackage{wallpaper}
+\CenterWallPaper{1}{images/proofs.jpg}
+$endif$
 \usepackage[$for(babel-otherlangs)$$babel-otherlangs$,$endfor$main=$if(babel-lang)$$babel-lang$$else$english$endif$]{babel}
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands
@@ -231,6 +237,8 @@ $endfor$
 $if(babel-newcommands)$
   $babel-newcommands$
 $endif$
+
+\usepackage{hyphenat}
 
 $if(dir)$
 \ifXeTeX

@@ -1,7 +1,7 @@
 \documentclass
 [
-$if(stage)$
-stage=$stage$,
+$if(proofs)$
+stage=draft,
 $else$
 stage=final,
 $endif$
@@ -18,9 +18,19 @@ $else$
 doi=10.33735/phimisci.$date$.$artid$,
 $endif$
 year=$date$,
-settings/logo-url={$logo$}
+settings/widow-control=chernoff
 ]
-{phimisci}
+{tex/phimisci}
+
+\PhiMiSciSettings{
+  settings/logo-url={images/phimisci-logo-mini.pdf},
+  settings/copyright-text={%
+        \href{https://philosophymindscience.org}{philosophymindscience.org}.
+        \ ISSN:\ 2699-0369.\hfill
+        \href{https://creativecommons.org/licenses/by/4.0}
+        {\includegraphics[width=1.75cm]{images/ccby.pdf}}
+      }
+}
 
 \title$if(short-title)$[$short-title$]$endif${$title$}
   
@@ -51,9 +61,11 @@ $if(bibliography)$
 \addbibresource{$bibliography$}
 $endif$
 
-\pdfinfo{/Producer (PhiMiSci Typesetting Container)}
+\hypersetup{pdfinfo = {/Producer (PhiMiSci Typesetting Container)}}
 
 \begin{document}
 \maketitle
 $body$
+
+\printbibliography
 \end{document}
