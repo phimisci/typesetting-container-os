@@ -40,6 +40,7 @@ RUN mkdir -p /usr/share/fonts/libertinus \
 COPY fonts/libertinus/. /usr/share/fonts/libertinus/
 COPY fonts/libertinus-math/. /usr/share/fonts/libertinus-math/
 COPY fonts/opensans/. /usr/share/fonts/opensans/
+COPY fonts/noto-sans/. /usr/share/fonts/noto-sans/
 
 # Update font cache
 RUN fc-cache -f -v
