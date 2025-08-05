@@ -54,8 +54,8 @@ RUN tlmgr install xurl bookmark hyphenat
 # Install packages for new layout
 RUN tlmgr install enumitem xparse koma-script amsmath amsthm amssymb array 
 RUN tlmgr install booktabs csquotes graphicx hyperref xcolor etoolbox
-RUN tmlgr install iftex l3keys2e orcidlink libertinus noto-sans fontspec
-RUN tlmgr install biblatex geometry lua-widow-control
+RUN tmlgr install l3kernel l3packages orcidlink libertinus noto-sans 
+RUN tlmgr install fontspec biblatex geometry lua-widow-control
 
 # Set the working directory
 WORKDIR /app
