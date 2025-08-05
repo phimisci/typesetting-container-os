@@ -1,3 +1,6 @@
+$if(parentheses)$
+\PassOptionsToPackage{autocite=plain}{biblatex}
+$endif$
 \documentclass
 [
 $if(proofs)$
@@ -5,8 +8,13 @@ stage=draft,
 $else$
 stage=final,
 $endif$
+$if(issue.bookauthors)$
+discussed-book-authors={$issue.bookauthors$},
+discussed-book={$issue.title$},
+$else$
 $if(issue.title)$
 issue={$issue.title$},
+$endif$
 $endif$
 $if(issue.editors)$
 editor={$issue.editors$},
@@ -28,9 +36,8 @@ $endif$
   settings/logo-url={images/phimisci-logo-mini.pdf},
   settings/copyright-text={%
         \href{https://philosophymindscience.org}{philosophymindscience.org}.
-        \ ISSN:\ 2699-0369.\hfill
-        \href{https://creativecommons.org/licenses/by/4.0}
-        {\includegraphics[width=1.75cm]{images/ccby.pdf}}
+        ISSN: 2699-0369.\hfill
+        \href{https://creativecommons.org/licenses/by/4.0}{\includegraphics[width=1.75cm]{images/ccby.pdf}}%
       }
 }
 
