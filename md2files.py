@@ -134,7 +134,7 @@ def construct_pandoc(
         lua_filters=[],
         bibliography_processing="citeproc",
         bibliography_csl_style=None,
-        bibliography_biblatex_options=[],
+        bibliography_manual_parentheses=False,
         bibliography_file=None,
         number_sections=True,
         pdf_engine=None,
@@ -176,8 +176,9 @@ def construct_pandoc(
         
     if bibliography_processing == "biblatex":
         a.append("--biblatex")
-        for o in bibliography_biblatex_options:
-            a.append(f"-V biblatexoptions={o}")
+        if bibliography_manual_parentheses:
+            a.append("-M")
+            a.append("parentheses")
 
     if number_sections:
         a.append("--number-sections")
@@ -284,9 +285,11 @@ def main(args) -> None:
         active_filters.append("latex-compound-words.lua")
 
     if args.parentheses:
-        CSLFILE = "csl/apa7-manual-parentheses.csl" 
+        CSLFILE = "csl/apa7-manual-parentheses.csl"
+        PARENTHESES = True
     else:
-        CSLFILE = "csl/apa7-single-spaced.csl" 
+        CSLFILE = "csl/apa7-single-spaced.csl"
+        PARENTHESES = False
 
     if args.layout == "classic":
         TEXTEMPLATE = "templates/phimisci-classic.tex"
@@ -313,6 +316,7 @@ def main(args) -> None:
         base_config = {
             "lua_filters": active_filters,
             "bibliography_processing": "biblatex",
+            "bibliography_manual_parentheses": PARENTHESES,
             "pdf_engine": "latexmk",
             "bibliography_file": BIBLIOGRAPHY,
             "template": TEXTEMPLATE,
