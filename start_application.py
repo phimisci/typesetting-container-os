@@ -61,17 +61,17 @@ def parse_arguments() -> argparse.Namespace:
              "extension."
         )
     parser.add_argument(
-        "--widow_treament", 
+        "--widows", 
         action="store_true", 
         help="Automatically treat widows in PDF output."
         )
     parser.add_argument(
-        "--compound_filter", 
+        "--compounds", 
         action="store_true", 
         help="Make compound words breakable in PDF output."
         ) 
     parser.add_argument(
-        "--manual_parentheses", 
+        "--parentheses", 
         action="store_true", 
         help="Whether parentheses are placed manually in citations."
         )
@@ -149,12 +149,12 @@ def main(args) -> None:
         if args.layout:
             command.append("--layout")
             command.extend(args.layout)            
-        if args.widow_treament:
-            command.append("--widow_treament")
-        if args.compound_filter:
-            command.append("--compound_filter")
-        if args.manual_parentheses:
-            command.append("--manual_parentheses")
+        if args.widows:
+            command.append("--widows")
+        if args.compounds:
+            command.append("--compounds")
+        if args.parentheses:
+            command.append("--parentheses")
         if args.html:
             command.append("--html")
         if args.pdf:
