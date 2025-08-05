@@ -297,6 +297,7 @@ def main(args) -> None:
         TEXTEMPLATE = "templates/phimisci-twocolumn.tex"
 
     copy_files_to_app_dir()
+    base_config = dict()
 
     if args.layout == "classic":
         base_config = {
