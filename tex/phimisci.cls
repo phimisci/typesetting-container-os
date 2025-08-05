@@ -64,7 +64,7 @@
                 csquotes, enumitem, graphicx, hyphenat}
 \RequirePackage[final, hyperfootnotes=false, pdfusetitle=true]{hyperref}
 \RequirePackage[table]{xcolor}
-\RequirePackage{etoolbox, expl3, iftex, l3keys2e, microtype, orcidlink}
+\RequirePackage{etoolbox, expl3, l3keys2e, microtype, orcidlink}
 \ExplSyntaxOn
 \bool_new:N \l__phimisci_output_keywords_bool
 \bool_new:N \l__phimisci_output_abstract_bool
@@ -267,7 +267,6 @@
   {
     \hypersetup
       {
-        pdfauthor = { \tl_use:N \l_phimisci_authors_tl },
         pdftitle  = { \tl_use:N \l_phimisci_document_title_tl }
       }
   }
@@ -360,15 +359,7 @@
     citation-file .tl_set:N = \l__phimisci_citation_file_name_tl,
     citation-file .initial:n = { phimisci-current-article.bib },
     copyright-text .tl_set:N = \l__phimisci_copyright_tl,
-    copyright-text .initial:n =
-      {
-        \href{https://philosophymindscience.org}{philosophymindscience.org}.
-        \ ISSN:\ 2699-0369.\hfill
-        \href{https://creativecommons.org/licenses/by/4.0}
-        {\includegraphics[width=1.75cm]{\tl_use:N \l__phimisci_copyright_icon_tl}}
-      },
-    copyright-icon .tl_set:N = \l__phimisci_copyright_icon_tl,
-    copyright-icon .initial:n = { },
+    copyright-text .initial:n = { },
     emergency-stretch .dim_set:N = \l__phimisci_settings_emergencystretch_dim,
     emergency-stretch .initial:n = { 2em },
     paragraph-indent .dim_set:N = \parindent,
@@ -477,6 +468,7 @@
                    \l__phimisci_authors_to_ids_prop
                    \l__phimisci_author_ids_to_affiliations_prop
                    \l__phimisci_author_ids_to_orcids_prop
+    \hypersetup { pdfauthor  = { \tl_use:N \l_phimisci_authors_tl } }
   }
 \NewDocumentCommand { \PhiMiSci@OutputAuthorData } {}
   {
