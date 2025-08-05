@@ -148,7 +148,7 @@ def main(args) -> None:
             command.extend(args.filter)
         if args.layout:
             command.append("--layout")
-            command.extend(args.layout)            
+            command.append(args.layout)            
         if args.widows:
             command.append("--widows")
         if args.compounds:
