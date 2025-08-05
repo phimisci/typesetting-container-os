@@ -34,12 +34,14 @@ ENV PATH="/opt/flask_app/bin:$PATH"
 # Create directories for fonts
 RUN mkdir -p /usr/share/fonts/libertinus \
     /usr/share/fonts/libertinus-math \
-    /usr/share/fonts/opensans
+    /usr/share/fonts/opensans \
+    /usr/share/fonts/noto-sans
 
 # Copy fonts
 COPY fonts/libertinus/. /usr/share/fonts/libertinus/
 COPY fonts/libertinus-math/. /usr/share/fonts/libertinus-math/
 COPY fonts/opensans/. /usr/share/fonts/opensans/
+COPY fonts/noto-sans/. /usr/share/fonts/noto-sans/
 
 # Update font cache
 RUN fc-cache -f -v
@@ -48,8 +50,12 @@ RUN fc-cache -f -v
 RUN tlmgr update --self --all
 RUN tlmgr install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc 
 RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
-RUN tlmgr install xurl bookmark
-RUN tlmgr install enumitem
+RUN tlmgr install xurl bookmark hyphenat
+# Install packages for new layout
+RUN tlmgr install enumitem koma-script amsmath amscls amsfonts tools 
+RUN tlmgr install booktabs csquotes graphics hyperref xcolor etoolbox
+RUN tlmgr install l3kernel l3packages orcidlink libertinus noto 
+RUN tlmgr install fontspec biblatex geometry lua-widow-control
 
 # Set the working directory
 WORKDIR /app
