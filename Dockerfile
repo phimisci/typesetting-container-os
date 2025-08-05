@@ -50,7 +50,7 @@ RUN fc-cache -f -v
 RUN tlmgr update --self --all
 RUN tlmgr install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc 
 RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
-RUN tlmgr install xurl bookmark hyphenat
+RUN tlmgr install xurl xkeyval bookmark hyphenat
 # Install packages for new layout
 RUN tlmgr install enumitem koma-script amsmath amscls amsfonts tools 
 RUN tlmgr install booktabs csquotes graphics hyperref xcolor etoolbox
