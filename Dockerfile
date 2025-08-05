@@ -53,7 +53,7 @@ RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
 RUN tlmgr install xurl bookmark hyphenat
 # Install packages for new layout
 RUN tlmgr install enumitem koma-script amsmath amscls amsfonts tools 
-RUN tlmgr install booktabs csquotes graphicx hyperref xcolor etoolbox
+RUN tlmgr install booktabs csquotes graphics hyperref xcolor etoolbox
 RUN tmlgr install l3kernel l3packages orcidlink libertinus noto-sans 
 RUN tlmgr install fontspec biblatex geometry lua-widow-control
 
