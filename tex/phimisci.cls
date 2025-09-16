@@ -119,7 +119,8 @@
   {
     \newfontfamily \PhiMiSciTitleFont
       { NotoSansDisplay-Regular.ttf }
-      [ BoldFont = NotoSansDisplay-SemiBold.ttf,
+      [ Ligatures = TeX,
+        BoldFont = NotoSansDisplay-SemiBold.ttf,
         ItalicFont = NotoSansDisplay-SemiBoldItalic.ttf ]
   }
   {
@@ -127,7 +128,8 @@
       {
         \newfontfamily \PhiMiSciTitleFont
           { Noto~Sans~Display }
-          [ BoldFont = Noto~Sans~Display~SemiBold,
+          [ Ligatures = TeX,
+            BoldFont = Noto~Sans~Display~SemiBold,
             ItalicFont = Noto~Sans~Display~SemiBold~Italic ]
       }
       {
@@ -468,7 +470,7 @@
                    \l__phimisci_authors_to_ids_prop
                    \l__phimisci_author_ids_to_affiliations_prop
                    \l__phimisci_author_ids_to_orcids_prop
-    \hypersetup { pdfauthor  = { \tl_use:N \l_phimisci_authors_tl } }
+    \hypersetup { pdfauthor = { \tl_use:N \l_phimisci_authors_tl } }
   }
 \NewDocumentCommand { \PhiMiSci@OutputAuthorData } {}
   {
