@@ -16,7 +16,7 @@
 %% http://www.latex-project.org/lppl.txt
 %% -------------------------------------------------------------------------------
 \NeedsTeXFormat {LaTeX2e}
-\ProvidesExplClass {phimisci} {2025-08-01} {1.0}
+\ProvidesExplClass {phimisci} {2025-09-18} {1.0}
                    {Philosophy and the Mind Sciences Journal Template}
 \msg_new:nnnn { phimisci } { missing-logo-url }
               { I~didn't~find~a~logo~file~to~print~in~the~article's~header. }
@@ -141,7 +141,7 @@
   }
 \ExplSyntaxOff
 \newfontfamily \PhiMiSciMediumFont {NotoSans-Medium.ttf}
-  [ItalicFont = NotoSans-MediumItalic.ttf]
+  [Ligatures = TeX, ItalicFont = NotoSans-MediumItalic.ttf]
 \AtBeginDocument{\fontsize{10.5bp}{13.5bp}\selectfont}
 \setkomafont{title}
   {%
@@ -205,6 +205,10 @@
 \newkomafont{PhiMiSciTableBody}
   {%
     \sffamily\fontsize{9bp}{13.5bp}\selectfont%
+  }
+\newkomafont{PhiMiSciWatermark}
+  {%
+    \normalfont\normalcolor\color{black!15}%
   }
 \addtokomafont{pagefoot}{\normalfont\color{PhiMiSciHeadingBlue}}
 \addtokomafont{pagehead}
@@ -298,6 +302,18 @@
   {
     \KOMAoptions{overfullrule=true}
     \RequirePackage{scrtime}
+    \RequirePackage{tikz}
+    \AddToHook{shipout/background}{%
+      \put(0pt, 0pt) {%
+        \begin{tikzpicture}[remember~picture, overlay]
+          \node [rotate=45, scale=5] at (current~page.center)
+                {
+                  \usekomafont{PhiMiSciWatermark}
+                  \tl_use:N \l__phimisci_draft_watermark_tl
+                };
+        \end{tikzpicture}
+      }
+    }
     \RequirePackage[pagewise, switch]{lineno}
     \AtBeginDocument{\linenumbers}
     \bool_set_true:N \l__phimisci_output_authors_bool
@@ -378,6 +394,8 @@
       {
         \textit{Draft~generated~on~\today{}~at~\thistime{}.}
       },
+    draft-watermark .tl_set:N = \l__phimisci_draft_watermark_tl,
+    draft-watermark .initial:n = {PhiMiSci~uncorrected~proofs},
     footnote-break-penalty .int_set:N =
       \l__phimisci_settings_footnote_penalty_int,
     footnote-break-penalty .initial:n = { 1000 },
@@ -844,9 +862,9 @@
 \cs_new:Npn \phimisci_check_abstract_length:n #1
   {
     \int_set:Nn \l__phimisci_abstract_length_int { \tl_count:o { #1 } }
-    \int_compare:nNnT { \l__phimisci_abstract_length_int } < { 30 }
+    \int_compare:nNnT { \l__phimisci_abstract_length_int } < { 100 }
       { \AtEndDocument{ \ClassWarning {phimisci} {Very~short~abstract.} } }
-    \int_compare:nNnT { \l__phimisci_abstract_length_int } > { 1000 }
+    \int_compare:nNnT { \l__phimisci_abstract_length_int } > { 2000 }
       { \AtEndDocument { \ClassWarning {phimisci} {Very~long~abstract.} } }
   }
 \cs_new:Npn \phimisci_process_keywords:n #1
@@ -1099,12 +1117,20 @@
         }
     }
     \let\and\relax
-    \vskip 2.66\baselineskip%
-    {%
-      \usekomafont{title}{\@title
-      \ifx\@subtitle\@empty\else:\fi\par\vskip.5\baselineskip}%
-    }%
-    {\ifx\@subtitle\@empty\else\usekomafont{subtitle}\@subtitle\par\vskip.5\baselineskip\fi}%
+    \vskip 2.66\baselineskip
+    {
+      \usekomafont{title}
+      {
+        \@title
+        \par\vskip.5\baselineskip
+      }
+    }
+    {
+      \ifx\@subtitle\@empty
+      \else
+      \usekomafont{subtitle}\@subtitle\par\vskip.5\baselineskip
+      \fi
+    }
     \vskip .5em
     \PhiMiSci@OutputAuthorData{}
     \enlargethispage{-2.5\baselineskip}
@@ -1114,8 +1140,6 @@
     \PhiMiSci@OutputMetadata{}
     \aftergroup\@afterindentfalse\aftergroup\@afterheading
   }
-\ExplSyntaxOff
-\ExplSyntaxOn
 \RenewDocumentCommand { \dictumrule } {} { \smallskip }
 \AddToHook { env/quote/begin } { \usekomafont{PhiMiSciQuote} }
 \AddToHook { env/quotation/begin } { \usekomafont{PhiMiSciQuote} }
@@ -1215,19 +1239,25 @@
   }
 \NewDocumentCommand {\PhiMiSci@Header} { }
   {%
-     \tl_use:N \l__phimisci_journal_short_name_tl
-     \c_space_token | \c_space_token
-     \tl_use:N \l__phimisci_locale_volume_tl
-     \c_space_token
-     \tl_use:N \l_phimisci_volume_tl
-     \hfill
-     \Ifthispageodd
-        {
-          \tl_use:N \l_phimisci_short_document_title_tl
-        }
-        {
-          \tl_use:N \l_phimisci_header_authors_tl
-        }
+    \bool_if:NTF \l__phimisci_output_publication_header_footer_bool
+      {
+        \tl_use:N \l__phimisci_journal_short_name_tl
+        \c_space_token | \c_space_token
+        \tl_use:N \l__phimisci_locale_volume_tl
+        \c_space_token
+        \tl_use:N \l_phimisci_volume_tl
+      }
+      {
+        \tl_use:N \l__phimisci_submission_footer_tl
+      }
+    \hfill
+    \Ifthispageodd
+      {
+        \tl_use:N \l_phimisci_short_document_title_tl
+      }
+      {
+        \tl_use:N \l_phimisci_header_authors_tl
+      }
   }
 \definecolor{orcidlogocol}{HTML}{\tl_use:N \l__phimisci_orcid_color_tl}
 \renewcommand{\@OrigHeightRecip}{0.006}
