@@ -16,7 +16,7 @@
 %% http://www.latex-project.org/lppl.txt
 %% -------------------------------------------------------------------------------
 \NeedsTeXFormat {LaTeX2e}
-\ProvidesExplClass {phimisci} {2025-09-18} {1.0}
+\ProvidesExplClass {phimisci} {2025-09-24} {1.0}
                    {Philosophy and the Mind Sciences Journal Template}
 \msg_new:nnnn { phimisci } { missing-logo-url }
               { I~didn't~find~a~logo~file~to~print~in~the~article's~header. }
@@ -92,7 +92,6 @@
 \prop_new:N \l__phimisci_affiliation_id_resolver_prop
 \seq_new:N \l__phimisci_keywords_seq
 \seq_new:N \l__phimisci_authors_seq
-\seq_new:N \l_phimisci_issue_editor_seq
 \tl_const:Nn \l__phimisci_parnum_excluded_objects_base_tl
   {
     env/quote, env/quotation, env/itemize, env/enumerate, env/description,
@@ -492,6 +491,8 @@
   }
 \NewDocumentCommand { \PhiMiSci@OutputAuthorData } {}
   {
+    \group_begin:
+    \parindent 0pt
     \bool_if:NT \l__phimisci_output_authors_bool
       {
         \group_begin:
@@ -567,6 +568,7 @@
         \par
         \vspace* { 2\baselineskip }
       }
+    \group_end:
   }
 \cs_new:Npn \phimisci_process_author_data:nNNN #1#2#3#4
   {
@@ -609,26 +611,29 @@
                          }
       \seq_map_inline:Nn \l__phimisci_author_affiliation_seq
         {
-          \prop_get:NnNTF \l__phimisci_affiliation_id_resolver_prop { ####1 }
-            \l__phimisci_afil_loop_tl
+          \tl_if_blank:nF { ####1 }
             {
-              \seq_put_right:NV
-                \l__phimisci_author_affiliation_ids_seq
+              \prop_get:NnNTF \l__phimisci_affiliation_id_resolver_prop { ####1 }
                 \l__phimisci_afil_loop_tl
-            }
-            {
-              \prop_put:Nxx \l__phimisci_affiliation_id_resolver_prop
-                { ####1 }
                 {
-                  \int_eval:n
+                  \seq_put_right:NV
+                    \l__phimisci_author_affiliation_ids_seq
+                    \l__phimisci_afil_loop_tl
+                }
+                {
+                  \prop_put:Nxx \l__phimisci_affiliation_id_resolver_prop
+                    { ####1 }
+                    {
+                      \int_eval:n
+                        {
+                          \prop_count:N \l__phimisci_affiliation_id_resolver_prop
+                          + 1
+                        }
+                    }
+                  \seq_put_right:Nx \l__phimisci_author_affiliation_ids_seq
                     {
                       \prop_count:N \l__phimisci_affiliation_id_resolver_prop
-                      + 1
                     }
-                }
-              \seq_put_right:Nx \l__phimisci_author_affiliation_ids_seq
-                {
-                  \prop_count:N \l__phimisci_affiliation_id_resolver_prop
                 }
             }
         }
@@ -889,16 +894,21 @@
             \group_begin:
               \usekomafont{ PhiMiSciQuote }
               \tl_use:N \l__phimisci_abstract_tl
+              \par
             \group_end:
           }
         \bool_if:NT \l__phimisci_output_keywords_bool
           {
             \vskip 1em
-            \usekomafont{ PhiMiSciKeywords }
-            \textbf{\tl_use:N \l__phimisci_locale_keywords_tl}
-            \tl_use:N \l__phimisci_keywords_tl
+            \noindent
+            \group_begin:
+              \usekomafont{ PhiMiSciKeywords }
+              \textbf{\tl_use:N \l__phimisci_locale_keywords_tl}
+              \tl_use:N \l__phimisci_keywords_tl
+              \par
+            \group_end:
           }
-        \pagebreak
+        \clearpage
       }
   }
 \AtBeginDocument
@@ -1066,9 +1076,10 @@
 \bibhang=6.25mm
 \RenewDocumentCommand {\ppspace} {} {\addnbthinspace}
 \ExplSyntaxOn
-\RenewDocumentCommand {\@maketitle} {}
+\RenewDocumentCommand {\maketitle} {}
   {%
     {
+      \thispagestyle{plain.scrheadings}
      \bool_if:NT \l__phimisci_output_publication_header_footer_bool
        {
          \vspace*{-16.5mm}
@@ -1134,11 +1145,11 @@
     \vskip .5em
     \PhiMiSci@OutputAuthorData{}
     \enlargethispage{-2.5\baselineskip}
-    \pagebreak
+    \newpage
     \vspace*{3.25\baselineskip}
     \enlargethispage{-4\baselineskip}
     \PhiMiSci@OutputMetadata{}
-    \aftergroup\@afterindentfalse\aftergroup\@afterheading
+    \@afterindentfalse\@afterheading
   }
 \RenewDocumentCommand { \dictumrule } {} { \smallskip }
 \AddToHook { env/quote/begin } { \usekomafont{PhiMiSciQuote} }
