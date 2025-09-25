@@ -45,7 +45,7 @@ $endif$
   
 $if(subtitle)$\subtitle{$subtitle$}$endif$
       
-\author{$for(author)$$author.name$$if(author.affiliation)$\affiliation{$for(author.affiliation)$$author.affiliation.organization$$sep$ ; $endfor$}$endif$$if(author.orcid)$\orcid{$author.orcid$}$endif$
+\author$if(author-hdr)$[$author-hdr$]$endif${$for(author)$$author.name$$if(author.affiliation)$\affiliation{$for(author.affiliation)$$author.affiliation.organization$$sep$ ; $endfor$}$endif$$if(author.orcid)$\orcid{$author.orcid$}$endif$
 $sep$\and $endfor$}
 
 $if(tags)$
