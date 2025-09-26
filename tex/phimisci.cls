@@ -16,7 +16,7 @@
 %% http://www.latex-project.org/lppl.txt
 %% -------------------------------------------------------------------------------
 \NeedsTeXFormat {LaTeX2e}
-\ProvidesExplClass {phimisci} {2025-09-24} {1.0}
+\ProvidesExplClass {phimisci} {2025-09-26} {1.0.1}
                    {Philosophy and the Mind Sciences Journal Template}
 \msg_new:nnnn { phimisci } { missing-logo-url }
               { I~didn't~find~a~logo~file~to~print~in~the~article's~header. }
@@ -695,10 +695,7 @@
         \int_compare:nNnTF
           { \seq_count:N \l__phimisci_authors_header_tmp_seq } = 1
           {
-            \tl_set:Nx \l__phimisci_copyright_holder_tl
-              {
-                \seq_item:Nn \l__phimisci_authors_header_tmp_seq { 1 }
-              }
+            \tl_set:Nn \l__phimisci_copyright_holder_tl { The~author }
           }
           {
             \tl_set:Nn \l__phimisci_copyright_holder_tl { The~authors }
