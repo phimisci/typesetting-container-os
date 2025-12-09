@@ -133,6 +133,25 @@ See also figure @fig:figure1.
 
 Currently, references are only supported in the output formats PDF, TEX, and HTML.
 
+### Reference: Available CLI Flags
+
+Below is a reference of all available command-line arguments:
+
+- `markdown_file` (Required): The input Markdown file.
+- `metadata_file` (Required): The input YAML metadata file.
+- `--bibtex` / `bibtex_file`: Path to the BibTeX bibliography file.
+- `--filename`: Name for the output files (defaults to input filename).
+- `--layout`: Specify the layout template. Options: `classic`, `twocolumn`.
+- `--compounds`: Apply filter for better hyphenation in compound words.
+- `--parentheses`: Use citation style with manual parentheses.
+- `--widows`: Enable automatic widow/orphan control.
+- `--filter` / `-f`: Space-separated list of additional Lua filters.
+- `--pdf`: Generate PDF output.
+- `--proof`: Generate a PDF proof version.
+- `--html`: Generate HTML output.
+- `--tex`: Generate LaTeX source output.
+- `--jats`: Generate JATS XML output.
+
 ## Customizing the container
 To customize the container, for example for a different journal, all files in the `templates`, `filter`, `csl`, and `fonts` folders can be replaced.
 
@@ -174,6 +193,9 @@ Contributions to the typesetting container are welcome. If you have any suggesti
 This application was developed by Thomas Jurczyk (thomjur on GitHub) for the journal [Philosophy and the Mind Sciences](https://philosophymindscience.org/) as part of a project funded by the German Research Foundation (DFG).
 
 ## Versions
+
+### 1.0.2 (09.12.2025)
+- New LaTeX class
 
 ### 1.0.0 (31.10.2024)
 - Initial release of the typesetting container
