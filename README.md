@@ -99,24 +99,24 @@ Don't forget to create a YAML block in the YAML file by using the three dashes `
 If you want to change the metadata of the journal, you can either do so directly in the web or by setting up a container with a custom metadata file for your journal. To customize the typesetting workflow container, please refer to the section "Customizing the Container."
 
 ## CLI usage of the Docker container
-After the image has been created, the container can be used. First, a shell must be opened in the directory where the article files are located (Markdown, Metadata, BibTeX (optional), and images). In the directory, the following command can now be executed in the command line to create a PDF file from the source files:
+After the image has been created, the container can be used. First, a shell must be opened in the directory where the article files are located (Markdown, Metadata, BibTeX (optional), and images). You must also define a layout style using the `--layout` option, which can either be 'classic' or 'twocolumn'. In the directory, the following command can now be executed in the command line to create a PDF file from the source files:
 
-`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf`
+`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --layout twocolumn --pdf`
 
 Using  Windows (PowerShell), the command is as follows:
 
-`docker run --rm --volume "${PWD}:/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf`
+`docker run --rm --volume "${PWD}:/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --layout twocolumn --pdf`
 
 If an HTML version of the article should also be created, a corresponding flag can simply be added:
 
-`docker run --rm --volume "${PWD}:/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf --html`
+`docker run --rm --volume "${PWD}:/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --layout twocolumn --pdf --html`
 
 Now both the PDF and the HTML are created. After the command is executed, a PDF file named `Wirtz_2024.pdf` and an HTML file named `Wirtz_2024.html` should be created in the directory. The filenames may vary depending on the container configuration. Additionally, a file named `PROCESS.log` is created, which contains any error messages or warnings (for example, if there is a Markdown syntax error that leads to a failed conversion). You can optionally also pass a filename for the output files using the `--filename` flag.
 
 ### Using Lua filters (optional)
 The typesetting container also supports the use of [Lua filters](https://pandoc.org/lua-filters.html) for Pandoc to influence the conversion of the files. The filters can be added when calling the container via `--filter`. In the vanilla version of the typesetting container, there is the option to call the `pandoc-figref.lua` filter, which allows referencing images and tables in Markdown. More information about this filter can be found [here](). A call to create a PDF using the `pandoc-figref.lua` filter is as follows (Linux):
 
-`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --pdf --filter pandoc-figref.lua`
+`docker run --rm --volume "$(pwd):/app/article" mmm-typesetting-container --markdown_file Wirtz_2024.md --metadata_file metadata.yaml --bibtex_file Wirtz_2024.bib --layout twocolumn --pdf --filter pandoc-figref.lua`
 
 #### Linking images with pandoc-figref
 If an image is to be linked within the text, a corresponding identifier must first be added to the image (see the following example):
@@ -139,9 +139,9 @@ Below is a reference of all available command-line arguments:
 
 - `markdown_file` (Required): The input Markdown file.
 - `metadata_file` (Required): The input YAML metadata file.
-- `--bibtex` / `bibtex_file`: Path to the BibTeX bibliography file.
+- `--bibtex` / `bibtex_file` (Required): Path to the BibTeX bibliography file.
 - `--filename`: Name for the output files (defaults to input filename).
-- `--layout`: Specify the layout template. Options: `classic`, `twocolumn`.
+- `--layout` (Required): Specify the layout template. Options: `classic`, `twocolumn`.
 - `--compounds`: Apply filter for better hyphenation in compound words.
 - `--parentheses`: Use citation style with manual parentheses.
 - `--widows`: Enable automatic widow/orphan control.
@@ -195,7 +195,7 @@ This application was developed by Thomas Jurczyk (thomjur on GitHub) for the jou
 ## Versions
 
 ### 1.0.2 (09.12.2025)
-- New LaTeX class
+- New LaTeX class (`phimisci.cls`) template was updated to v.1.0.2
 
 ### 1.0.0 (31.10.2024)
 - Initial release of the typesetting container

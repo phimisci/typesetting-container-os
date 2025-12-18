@@ -9,6 +9,7 @@
 %% Template for the journal Philosophy and the Mind Sciences
 %% 
 %% Copyright (c) 2025 Ruhr-Universität Bochum
+%% Version: 1.0.2 (2025/12/09)
 %% 
 %% This file may be distributed and/or modified under the conditions of the LaTeX
 %% Project Public License, either version 1.3c of this license or (at your option)
@@ -16,7 +17,7 @@
 %% http://www.latex-project.org/lppl.txt
 %% -------------------------------------------------------------------------------
 \NeedsTeXFormat {LaTeX2e}
-\ProvidesExplClass {phimisci} {2025-09-26} {1.0.1}
+\ProvidesExplClass {phimisci} {2025-10-25} {1.0.2}
                    {Philosophy and the Mind Sciences Journal Template}
 \msg_new:nnnn { phimisci } { missing-logo-url }
               { I~didn't~find~a~logo~file~to~print~in~the~article's~header. }
@@ -120,7 +121,8 @@
       { NotoSansDisplay-Regular.ttf }
       [ Ligatures = TeX,
         BoldFont = NotoSansDisplay-SemiBold.ttf,
-        ItalicFont = NotoSansDisplay-SemiBoldItalic.ttf ]
+        ItalicFont = NotoSansDisplay-SemiBoldItalic.ttf,
+        BoldItalicFont = NotoSansDisplay-SemiBoldItalic.ttf ]
   }
   {
     \IfFontExistsTF { Noto~Sans~Display }
@@ -129,7 +131,8 @@
           { Noto~Sans~Display }
           [ Ligatures = TeX,
             BoldFont = Noto~Sans~Display~SemiBold,
-            ItalicFont = Noto~Sans~Display~SemiBold~Italic ]
+            ItalicFont = Noto~Sans~Display~SemiBold~Italic,
+            BoldItalicFont = Noto~Sans~Display~SemiBold~Italic ]
       }
       {
         \let\PhiMiSciTitleFont\sffamily
@@ -930,11 +933,11 @@
           \iow_newline:
           year   = { \int_use:N \l_phimisci_publication_year_int },
           \iow_newline:
-          title  = { {\tl_use:N \l_phimisci_document_title_tl} },
+          title  = { {\exp_not:V \l_phimisci_document_title_tl} },
           \iow_newline:
           \tl_if_blank:VF \@subtitle
             {
-              subtitle = { {\@subtitle} },
+              subtitle = { {\unexpanded\expandafter{\@subtitle}} },
               \iow_newline:
             }
           journal = { \tl_use:N \l__phimisci_journal_name_tl },
@@ -1151,6 +1154,16 @@
 \RenewDocumentCommand { \dictumrule } {} { \smallskip }
 \AddToHook { env/quote/begin } { \usekomafont{PhiMiSciQuote} }
 \AddToHook { env/quotation/begin } { \usekomafont{PhiMiSciQuote} }
+\AddtoDoHook { footnote/text/begin }
+  {
+    \AddToHook { env/quote/begin } [ PhiMiSciFnQuoteFont ] { \footnotesize }
+    \AddToHook { env/quotation/begin } [ PhiMiSciFnQuoteFont ] { \footnotesize }
+  }
+\AddtoDoHook { footnote/text/end }
+  {
+    \RemoveFromHook { env/quote/begin } [ PhiMiSciFnQuoteFont ]
+    \RemoveFromHook { env/quotation/begin } [ PhiMiSciFnQuoteFont ]
+  }
 \setlist[enumerate, itemize]
   {
     labelindent=\parindent,
