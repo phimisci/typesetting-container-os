@@ -46,8 +46,8 @@ COPY fonts/noto-sans/. /usr/share/fonts/noto-sans/
 RUN fc-cache -f -v
 
 # Install tlmgr and packages
-RUN tlmgr update --self --all
 RUN tlmgr option repository https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2025/tlnet-final
+RUN tlmgr update --self --all
 RUN tlmgr --verify-repo=none install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc
 RUN tlmgr --verify-repo=none install academicons biblatex-apa babel microtype upquote footnotehyper
 RUN tlmgr --verify-repo=none install xurl xkeyval bookmark hyphenat
