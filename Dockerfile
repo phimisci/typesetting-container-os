@@ -47,16 +47,16 @@ RUN fc-cache -f -v
 
 # Install tlmgr and packages
 RUN tlmgr update --self --all
-RUN tlmgr install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc
-RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
-RUN tlmgr install xurl xkeyval bookmark hyphenat
+RUN tlmgr --no-verify-downloads install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc
+RUN tlmgr --no-verify-downloads install academicons biblatex-apa babel microtype upquote footnotehyper
+RUN tlmgr --no-verify-downloads install xurl xkeyval bookmark hyphenat
 
 # Install packages for new layout
-RUN tlmgr install enumitem koma-script amsmath amscls amsfonts tools
-RUN tlmgr install booktabs csquotes graphics hyperref xcolor etoolbox
+RUN tlmgr --no-verify-downloads install enumitem koma-script amsmath amscls amsfonts tools
+RUN tlmgr --no-verify-downloads install booktabs csquotes graphics hyperref xcolor etoolbox
 RUN tlmgr --no-verify-downloads install l3kernel l3packages orcidlink noto
-RUN tlmgr install libertinus libertinus-otf libertinus-fonts
-RUN tlmgr install fontspec biblatex geometry lua-widow-control
+RUN tlmgr --no-verify-downloads install libertinus libertinus-otf libertinus-fonts
+RUN tlmgr --no-verify-downloads install fontspec biblatex geometry lua-widow-control
 
 # Rebuild TeX filename database after all installs
 RUN mktexlsr
