@@ -1,12 +1,11 @@
 FROM pandoc/latex:3.9
 
 # Install packages
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     python3 \
-    python3-pip \
-    python3-venv \
-    ghostscript \
-    && rm -rf /var/lib/apt/lists/*
+    py3-pip \
+    py3-virtualenv \
+    ghostscript
 
 # Create virtual environment for Flask application
 RUN python3 -m venv /opt/flask_app
@@ -48,13 +47,14 @@ RUN fc-cache -f -v
 
 # Install tlmgr and packages
 RUN tlmgr update --self --all
-RUN tlmgr install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc 
+RUN tlmgr install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc
 RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
 RUN tlmgr install xurl xkeyval bookmark hyphenat
+
 # Install packages for new layout
-RUN tlmgr install enumitem koma-script amsmath amscls amsfonts tools 
+RUN tlmgr install enumitem koma-script amsmath amscls amsfonts tools
 RUN tlmgr install booktabs csquotes graphics hyperref xcolor etoolbox
-RUN tlmgr install l3kernel l3packages orcidlink noto 
+RUN tlmgr install l3kernel l3packages orcidlink noto
 RUN tlmgr install libertinus libertinus-otf libertinus-fonts
 RUN tlmgr install fontspec biblatex geometry lua-widow-control
 
