@@ -4,40 +4,50 @@ on:
   push:
     branches: [ "phimisci-typesetting-container" ]
     tags:
-      - 'v*' # Images are only created if version is tagged 
+      - 'v*'
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.PHIMISCI_TS_OS_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.PHIMISCI_TS_OS_TOKEN }}
+
+      - name: Extract version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          docker build -t ghcr.io/${{ github.repository }}-phimisci:$VERSION .
-          docker build -t ghcr.io/${{ github.repository }}-phimisci:latest .
+          docker build \
+            -t ghcr.io/${{ github.repository }}-phimisci:${{ steps.version.outputs.VERSION }} \
+            -t ghcr.io/${{ github.repository }}-phimisci:latest \
+            .
 
       - name: Push Docker image
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          docker push ghcr.io/${{ github.repository }}-phimisci:$VERSION
+          docker push ghcr.io/${{ github.repository }}-phimisci:${{ steps.version.outputs.VERSION }}
           docker push ghcr.io/${{ github.repository }}-phimisci:latest
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PHIMISCI_TS_OS_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          token: ${{ secrets.PHIMISCI_TS_OS_TOKEN }}
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           body: |
             **Docker Images:**
             - `${{ github.repository }}-phimisci:${{ github.ref_name }}`
             - `${{ github.repository }}-phimisci:latest`
           draft: false
-          prerelease: false
+          prerelease: falsename: Docker Image CI and Release
