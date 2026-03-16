@@ -47,16 +47,16 @@ RUN fc-cache -f -v
 
 # Install tlmgr and packages
 RUN tlmgr update --self --all
-RUN tlmgr --no-verify-downloads install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc
-RUN tlmgr --no-verify-downloads install academicons biblatex-apa babel microtype upquote footnotehyper
-RUN tlmgr --no-verify-downloads install xurl xkeyval bookmark hyphenat
-
+RUN tlmgr option repository https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2025/tlnet-final
+RUN tlmgr --verify-repo=none install eso-pic quoting ragged2e lastpage wallpaper lineno footmisc
+RUN tlmgr --verify-repo=none install academicons biblatex-apa babel microtype upquote footnotehyper
+RUN tlmgr --verify-repo=none install xurl xkeyval bookmark hyphenat
 # Install packages for new layout
-RUN tlmgr --no-verify-downloads install enumitem koma-script amsmath amscls amsfonts tools
-RUN tlmgr --no-verify-downloads install booktabs csquotes graphics hyperref xcolor etoolbox
-RUN tlmgr --no-verify-downloads install l3kernel l3packages orcidlink noto
-RUN tlmgr --no-verify-downloads install libertinus libertinus-otf libertinus-fonts
-RUN tlmgr --no-verify-downloads install fontspec biblatex geometry lua-widow-control
+RUN tlmgr --verify-repo=none install enumitem koma-script amsmath amscls amsfonts tools
+RUN tlmgr --verify-repo=none install booktabs csquotes graphics hyperref xcolor etoolbox
+RUN tlmgr --verify-repo=none install l3kernel l3packages orcidlink noto
+RUN tlmgr --verify-repo=none install libertinus libertinus-otf libertinus-fonts
+RUN tlmgr --verify-repo=none install fontspec biblatex geometry lua-widow-control
 
 # Rebuild TeX filename database after all installs
 RUN mktexlsr
