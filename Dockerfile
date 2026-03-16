@@ -52,7 +52,7 @@ RUN tlmgr install academicons biblatex-apa babel microtype upquote footnotehyper
 RUN tlmgr install xurl xkeyval bookmark hyphenat
 
 # Install packages for new layout
-RUN tlmgr install enumitem koma-script amsmath amscls amsfonts tools
+RUN tlmgr install enumitem koma-script scrartcl amsmath amscls amsfonts tools
 RUN tlmgr install booktabs csquotes graphics hyperref xcolor etoolbox
 RUN tlmgr install l3kernel l3packages orcidlink noto
 RUN tlmgr install libertinus libertinus-otf libertinus-fonts
