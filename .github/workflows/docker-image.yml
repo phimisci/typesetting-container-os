@@ -45,7 +45,8 @@ jobs:
           tag: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           body: |
+            **Docker Images:**
             - `${{ github.repository }}-phimisci:${{ github.ref_name }}`
             - `${{ github.repository }}-phimisci:latest`
           draft: false
-          prerelease: falsename: Docker Image CI and Release
+          prerelease: false
