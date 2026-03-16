@@ -1,25 +1,43 @@
-name: Docker Image CI
+name: Docker Image CI and Release
 
 on:
   push:
     branches: [ "phimisci-typesetting-container" ]
-  pull_request:
-    branches: [ "phimisci-typesetting-container" ]
+    tags:
+      - 'v*' # Images are only created if version is tagged 
 
 jobs:
-
-  build:
-
+  build-and-release:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Log in to GitHub Container Registry
-      run: echo "${{ secrets.PHIMISCI_TS_OS_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      
-    - name: Build Docker image
-      run: docker build -t ghcr.io/${{ github.repository }}-phimisci:latest .
-      
-    - name: Push Docker image
-      run: docker push ghcr.io/${{ github.repository }}-phimisci:latest
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.PHIMISCI_TS_OS_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker image
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          docker build -t ghcr.io/${{ github.repository }}-phimisci:$VERSION .
+          docker build -t ghcr.io/${{ github.repository }}-phimisci:latest .
+
+      - name: Push Docker image
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          docker push ghcr.io/${{ github.repository }}-phimisci:$VERSION
+          docker push ghcr.io/${{ github.repository }}-phimisci:latest
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PHIMISCI_TS_OS_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            **Docker Images:**
+            - `${{ github.repository }}-phimisci:${{ github.ref_name }}`
+            - `${{ github.repository }}-phimisci:latest`
+          draft: false
+          prerelease: false
